@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Admin;
 
 class AdminController extends Controller
 {
@@ -36,7 +36,10 @@ class AdminController extends Controller
         
         $validate = Validator::make($request->all(), $rules);
         if($validate->fails()){
-            return $validate->messages();
+            return response()->json([
+                'status' => false,
+                'message' => $validate->messages()->first()
+            ]);
         } else {
             $admin = Admin::create([
                 'username' => $request->username,
@@ -44,13 +47,11 @@ class AdminController extends Controller
                 'password' => Hash::make($request->password)
             ]);
             return response()->json([
-                'status' => 'success',
+                'status' => true,
                 'message' => 'successfully register',
-                'data' => [
-                    'admin' => [
-                        'username' => $admin->username,
-                        'email' => $admin->email
-                    ],
+                'admin' => [
+                    'username' => $admin->username,
+                    'email' => $admin->email
                 ]
             ],400);
         }
@@ -65,12 +66,30 @@ class AdminController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = Auth::guard('admin')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized'
+            ], 401);
         }
-        // $admin = Admin::where('email', $request->email)->first();
-        // $admin->token = $token; 
-        // $admin->save();
-        return $this->respondWithToken($token);
+        $admin = admin::where('email', $request->email)->first();
+        $admin->token = $token; 
+        $admin->save();      
+        return response()->json([
+            'status' => true,
+            'message' => 'successfully login',
+            'admin' => $admin
+        ],400);
+    }
+
+    public function logout()
+    {
+
+        auth('admin')->logout();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully logged out'
+        ]);
     }
 
     /**
@@ -84,26 +103,25 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $admin = auth('admin')->user();
+        if($admin){
+            return response()->json([
+                'status' => true,
+                'message' => 'Show All Data',
+                'admin' => $admin
+            ],400);
+        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Unauthorized'
+        ]);
     }
 
     /**
@@ -138,18 +156,5 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            //'expires_in' => auth('customers')->factory()->getTTL() * 60
-        ]);
-    }
-    public function me()
-    {
-        return response()->json(auth()->user());
     }
 }

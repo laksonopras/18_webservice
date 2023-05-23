@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Technician;
 
 class TechnicianController extends Controller
@@ -35,7 +36,10 @@ class TechnicianController extends Controller
         
         $validate = Validator::make($request->all(), $rules);
         if($validate->fails()){
-            return $validate->messages();
+            return response()->json([
+                'status' => false,
+                'message' => $validate->messages()->first()
+            ]);
         } else {
             $technician = Technician::create([
                 'username' => $request->username,
@@ -43,13 +47,11 @@ class TechnicianController extends Controller
                 'password' => Hash::make($request->password)
             ]);
             return response()->json([
-                'status' => 'success',
+                'status' => true,
                 'message' => 'successfully register',
-                'data' => [
-                    'technician' => [
-                        'username' => $technician->username,
-                        'email' => $technician->email
-                    ],
+                'technician' => [
+                    'username' => $technician->username,
+                    'email' => $technician->email
                 ]
             ],400);
         }
@@ -63,13 +65,31 @@ class TechnicianController extends Controller
     public function login(Request $request){
         $credentials = request(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$token = Auth::guard('technician')->attempt($credentials)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized'
+            ], 401);
         }
-        $technician = Technician::where('email', $request->email)->first();
+        $technician = technician::where('email', $request->email)->first();
         $technician->token = $token; 
-        $technician->save();
-        return $this->respondWithToken($token);
+        $technician->save();      
+        return response()->json([
+            'status' => true,
+            'message' => 'successfully login',
+            'technician' => $technician
+        ],400);
+    }
+
+    public function logout()
+    {
+
+        auth('technician')->logout();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully logged out'
+        ]);
     }
 
     /**
@@ -83,26 +103,25 @@ class TechnicianController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $technician = auth('technician')->user();
+        if($technician){
+            return response()->json([
+                'status' => true,
+                'message' => 'Show All Data',
+                'technician' => $technician
+            ],400);
+        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Unauthorized'
+        ]);
     }
 
     /**
@@ -137,18 +156,5 @@ class TechnicianController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            //'expires_in' => auth('customers')->factory()->getTTL() * 60
-        ]);
-    }
-    public function me()
-    {
-        return response()->json(auth()->user());
     }
 }

@@ -23,15 +23,15 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'api', 'prefix' => 'customer' ], function ($router) {
     Route::post('register', [CustomerController::class, 'register']);
     Route::post('login', [CustomerController::class, 'login']);
-    // Route::post('logout', 'AuthController@logout');
+    Route::post('logout', [CustomerController::class, 'logout']);
     // Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', [CustomerController::class, 'me']);
+    Route::post('me', [CustomerController::class, 'show']);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'admin' ], function ($router) {
     Route::post('register', [AdminController::class, 'register']);
     Route::post('login', [AdminController::class, 'login']);
-    // Route::post('logout', 'AuthController@logout');
+    Route::post('logout', [AdminController::class, 'logout']);
     // Route::post('refresh', 'AuthController@refresh');
     Route::post('me', [AdminController::class, 'me']);
 });

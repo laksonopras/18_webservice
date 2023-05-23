@@ -48,6 +48,10 @@ return [
             'driver' => 'jwt',
             'provider' => 'technicians',
         ],
+        'partner' => [
+            'driver' => 'jwt',
+            'provider' => 'partners',
+        ],
         
     ],
 
@@ -80,6 +84,10 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+        'partners' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Partner::class,
         ],
 
         // 'users' => [

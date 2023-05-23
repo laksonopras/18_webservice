@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Customer;
+use App\Models\Partner;
 
-class CustomerController extends Controller
+class PartnerController extends Controller
 {
 
     /**
@@ -30,8 +30,11 @@ class CustomerController extends Controller
     {
         $rules = array(
             'username' => ['required'],
-            'email' => ['required', 'email', 'unique:customers'],
+            'email' => ['required', 'email', 'unique:partners'],
             'password' => ['required', 'min:8'],
+            'address' => ['required'],
+            'coordinate' => ['required', 'float'],
+            'description' => ['required'],
         );
         
         $validate = Validator::make($request->all(), $rules);
@@ -41,7 +44,7 @@ class CustomerController extends Controller
                 'message' => $validate->messages()->first()
             ]);
         } else {
-            $customer = Customer::create([
+            $partner = partner::create([
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
@@ -49,9 +52,9 @@ class CustomerController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'successfully register',
-                'customer' => [
-                    'username' => $customer->username,
-                    'email' => $customer->email
+                'partner' => [
+                    'username' => $partner->username,
+                    'email' => $partner->email
                 ]
             ],400);
         }
@@ -65,26 +68,26 @@ class CustomerController extends Controller
     public function login(Request $request){
         $credentials = request(['email', 'password']);
 
-        if (!$token = Auth::guard('customer')->attempt($credentials)) {
+        if (!$token = Auth::guard('partner')->attempt($credentials)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthorized'
             ], 401);
         }
-        $customer = Customer::where('email', $request->email)->first();
-        $customer->token = $token; 
-        $customer->save();      
+        $partner = Partner::where('email', $request->email)->first();
+        $partner->token = $token; 
+        $partner->save();      
         return response()->json([
             'status' => true,
             'message' => 'successfully login',
-            'customer' => $customer
+            'partner' => $partner
         ],400);
     }
 
     public function logout()
     {
 
-        auth('customer')->logout();
+        auth('partner')->logout();
 
         return response()->json([
             'status' => true,
@@ -110,12 +113,12 @@ class CustomerController extends Controller
      */
     public function show()
     {
-        $customer = auth('customer')->user();
-        if($customer){
+        $partner = auth('partner')->user();
+        if($partner){
             return response()->json([
                 'status' => true,
                 'message' => 'Show All Data',
-                'customer' => $customer
+                'partner' => $partner
             ],400);
         }
         return response()->json([
