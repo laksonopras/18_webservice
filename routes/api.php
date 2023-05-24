@@ -25,7 +25,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'customer' ], function ($router
     Route::post('login', [CustomerController::class, 'login']);
     Route::post('logout', [CustomerController::class, 'logout']);
     // Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', [CustomerController::class, 'show']);
+    Route::get('me', [CustomerController::class, 'show']);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'admin' ], function ($router) {
@@ -33,5 +33,5 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin' ], function ($router) {
     Route::post('login', [AdminController::class, 'login']);
     Route::post('logout', [AdminController::class, 'logout']);
     // Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', [AdminController::class, 'me']);
+    Route::get('me', [AdminController::class, 'me']);
 });

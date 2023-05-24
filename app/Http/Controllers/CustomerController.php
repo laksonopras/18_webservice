@@ -116,7 +116,7 @@ class CustomerController extends Controller
                 'status' => true,
                 'message' => 'Show All Data',
                 'customer' => $customer
-            ],400);
+            ]);
         }
         return response()->json([
             'status' => false,
