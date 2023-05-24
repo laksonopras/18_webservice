@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PartnerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,3 +36,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin' ], function ($router) {
     // Route::post('refresh', 'AuthController@refresh');
     Route::get('me', [AdminController::class, 'me']);
 });
+
+Route::get('/partner/{id}', [PartnerController::class, 'index']);
+Route::delete('/partner/{id}', [PartnerController::class, 'destroy']);
+

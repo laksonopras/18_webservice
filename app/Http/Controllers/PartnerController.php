@@ -100,9 +100,14 @@ class PartnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $partner = Partner::with(['category', 'admin'])->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Show All Data',
+            'partner' => $partner
+        ],400);
     }
 
     /**
@@ -158,6 +163,10 @@ class PartnerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Partner::destroy($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'partner telah dihapus'
+        ],400);
     }
 }
