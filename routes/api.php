@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+<<<<<<< HEAD
 use App\Http\Controllers\CategoryController;
+=======
+use App\Http\Controllers\PartnerController;
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +41,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     Route::get('me', [AdminController::class, 'me']);
 });
 
+<<<<<<< HEAD
 Route::get('category', [CategoryController::class, 'index']);
+=======
+Route::get('/partner/{id}', [PartnerController::class, 'index']);
+Route::delete('/partner/{id}', [PartnerController::class, 'destroy']);
+
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00

@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Models\Categories;
 use Illuminate\Http\Request;
+=======
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Category;
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
 
 class CategoryController extends Controller
 {
@@ -14,12 +22,19 @@ class CategoryController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $category = Categories::all();
         return response()->json([
             'status' => true,
             'message' => 'input succes',
             'categories' => $category
         ], 400);
+=======
+        $cateogry = Category::all();
+        return response()->json([
+            'category' => $cateogry
+        ]);
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -40,6 +55,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
         $category = Categories::create([
             'category_name' => $request->category,
             'admin_id' => $request->admin_id
@@ -49,6 +65,9 @@ class CategoryController extends Controller
             'message' => 'input success',
             'categories' => $category
         ], 400);
+=======
+        //
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -59,12 +78,16 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
+<<<<<<< HEAD
         $category = Categories::where('id', 'like', $id)->get()->first();
         return response()->json([
             'status' => true,
             'message' => 'input success',
             'categories' => $category
         ], 400);
+=======
+        //
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -75,6 +98,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+<<<<<<< HEAD
+=======
+        //
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -86,6 +113,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+<<<<<<< HEAD
         $category = Categories::find($id);
         $category->update([
             'category_name' => $request->category,
@@ -99,6 +127,23 @@ class CategoryController extends Controller
             $category->admin_id = $request->admin_id;
         }
         $category->save();
+=======
+        $cateogry = Category::find($id);
+        //$cateogry = Category::update(); //Salah
+        // $cateogry->update([
+        //     'category_name' => $request->category,
+        //     'admin_id' => $request->admin_id,
+        // ]);
+
+        if($request->category){
+            $cateogry->category_name = $request->category;
+        }
+        if($request->category){
+            $cateogry->admin_id = $request->category;
+        }
+        $cateogry->save();
+        
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -109,10 +154,14 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+<<<<<<< HEAD
         Categories::destroy($id);
         return response()->json([
             'status' => true,
             'message' => 'input success',
         ], 400);
+=======
+        
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 }

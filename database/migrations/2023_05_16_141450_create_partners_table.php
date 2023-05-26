@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('account_status')->default(0);     // Status 0 karena belum aktivasi akun (belum bayar) 
             $table->integer('operational_status')->default(0); // Status 0 karena toko sedang tutup
             $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreignId('admins_id')->references('id')->on('admins')->onDelete('cascade');
+            $table->foreignId('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->string('token')->unique()->nullable();
             $table->timestamps();
         });
