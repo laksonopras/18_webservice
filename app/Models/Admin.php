@@ -21,21 +21,17 @@ class Admin extends Authenticatable implements JWTSubject
         'password',
     ];
 
-    public function banner(){
-        return $this->hasMany(Banner::class);
-    }
+    public function getJWTIdentifier() { return $this->getKey(); }
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
+    public function getJWTCustomClaims() { return []; }
 
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
+    public function banner(){ return $this->hasMany(Banner::class); }
+    
+    public function square_feed(){ return $this->hasMany(SquareFeeds::class ); }
+    
+    public function category(){ return $this->hasMany(Category::class); }
 
-    public function partner(){
-        return $this->hasMany(Partner::class);
-    }
+    public function partner(){ return $this->hasMany(Partner::class); }
+
+    public function transaction() { return $this->hasMany(Transaction::class);}
 }

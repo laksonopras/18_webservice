@@ -13,7 +13,7 @@ class Category extends Model
         'category_name', 'admin_id'
     ];
 
-    public function partner(){
-        return $this->hasMany(Partner::class);
-    }
+    public function partner(){ return $this->hasMany(Partner::class); }
+
+    public function admin(){ return $this->belongsTo(Admin::class); }
 }

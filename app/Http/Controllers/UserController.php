@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Customer;
+use App\Models\User;
+use Exception;
 
-class CustomerController extends Controller
+class UserController extends Controller
 {
 
     /**
@@ -30,7 +31,7 @@ class CustomerController extends Controller
     {
         $rules = array(
             'username' => ['required'],
-            'email' => ['required', 'email', 'unique:customers'],
+            'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8'],
         );
         
@@ -41,7 +42,7 @@ class CustomerController extends Controller
                 'message' => $validate->messages()->first()
             ]);
         } else {
-            $customer = Customer::create([
+            $user = User::create([
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
@@ -49,11 +50,8 @@ class CustomerController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'successfully register',
-                'customer' => [
-                    'username' => $customer->username,
-                    'email' => $customer->email
-                ]
-            ],400);
+                'user' => $user
+            ]);
         }
     }
 
@@ -65,31 +63,39 @@ class CustomerController extends Controller
     public function login(Request $request){
         $credentials = request(['email', 'password']);
 
-        if (!$token = Auth::guard('customer')->attempt($credentials)) {
+        if (!$token = Auth::guard('user')->attempt($credentials)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthorized'
-            ], 401);
+            ]);
         }
-        $customer = Customer::where('email', $request->email)->first();
-        $customer->token = $token; 
-        $customer->save();      
+        $user = User::where('email', $request->email)->first();
+        $user->remember_token = $token; 
+        $user->save();      
         return response()->json([
             'status' => true,
             'message' => 'successfully login',
-            'customer' => $customer
-        ],400);
+            'token' => $user->remember_token,
+            'user' => $user
+        ],200);
     }
 
     public function logout()
     {
 
-        auth('customer')->logout();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully logged out'
-        ]);
+        try{
+            auth('user')->logout();
+            return response()->json([
+                'status' => true,
+                'message' => 'Successfully logged out'
+            ],200);
+        } catch (Exception $exception){
+            return response()->json([
+                'status' => true,
+                'message' => 'Your token has expired'
+            ]);
+        }
+        
     }
 
     /**
@@ -110,12 +116,12 @@ class CustomerController extends Controller
      */
     public function show()
     {
-        $customer = auth('customer')->user();
-        if($customer){
+        $user = auth('user')->user();
+        if($user){
             return response()->json([
                 'status' => true,
                 'message' => 'Show All Data',
-                'customer' => $customer
+                'user' => $user
             ]);
         }
         return response()->json([

@@ -9,11 +9,11 @@ class Review extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'customer_id', 'partner_id', 'rating', 'description'
+        'user_id', 'partner_id', 'rating', 'description'
     ];
 
-    public function customer(){
-        return $this->belongsTo(Customer::class);
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
     public function partner(){

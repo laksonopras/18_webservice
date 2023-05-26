@@ -49,11 +49,8 @@ class AdminController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'successfully register',
-                'admin' => [
-                    'username' => $admin->username,
-                    'email' => $admin->email
-                ]
-            ],400);
+                'admin' => $admin
+            ]);
         }
     }
 
@@ -78,18 +75,17 @@ class AdminController extends Controller
             'status' => true,
             'message' => 'successfully login',
             'admin' => $admin
-        ],400);
+        ], 200);
     }
 
     public function logout()
     {
 
         auth('admin')->logout();
-
         return response()->json([
             'status' => true,
             'message' => 'Successfully logged out'
-        ]);
+        ], 200);
     }
 
     /**
@@ -99,7 +95,12 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $admin = Admin::all();
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all admin',
+            'admin' => $admin
+        ], 200);
     }
 
     /**

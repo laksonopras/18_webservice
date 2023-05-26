@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('calls', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('partner_id')->references('id')->on('partners')->onDelete('cascade');
-            $table->foreignId('technician_id')->references('id')->on('technicians')->onDelete('cascade')->nullable();
-            $table->float('customer_coordinate');
+            $table->float('user_coordinate');
             $table->integer('order_status')->default(0);
             $table->timestamps();
         });

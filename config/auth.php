@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'customer',
+        'guard' => 'user',
         'passwords' => 'users',
     ],
 
@@ -40,9 +40,9 @@ return [
             'driver' => 'jwt',
             'provider' => 'admins',
         ],
-        'customer' => [
+        'user' => [
             'driver' => 'jwt',
-            'provider' => 'customers',
+            'provider' => 'users',
         ],
         'technician' => [
             'driver' => 'jwt',
@@ -73,9 +73,9 @@ return [
     */
 
     'providers' => [
-        'customers' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Customer::class,
+            'model' => App\Models\User::class,
         ],
         'technician' => [
             'driver' => 'eloquent',

@@ -15,9 +15,7 @@ return new class extends Migration
     {
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('partner_name');
             $table->string('address');
             $table->string('avatar')->nullable();
             $table->float('coordinate');
@@ -26,8 +24,7 @@ return new class extends Migration
             $table->integer('account_status')->default(0);     // Status 0 karena belum aktivasi akun (belum bayar) 
             $table->integer('operational_status')->default(0); // Status 0 karena toko sedang tutup
             $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreignId('admin_id')->references('id')->on('admins')->onDelete('cascade');
-            $table->string('token')->unique()->nullable();
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

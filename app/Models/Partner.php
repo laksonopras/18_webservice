@@ -9,9 +9,7 @@ class Partner extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'username',
-        'email',
-        'password',
+        'partner_name',
         'address',
         'avatar',
         'coordinate',

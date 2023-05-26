@@ -19,6 +19,8 @@ class CategoryController extends Controller
     {
         $cateogry = Category::all();
         return response()->json([
+            'status' => true,
+            'message' => 'Show all Category',
             'category' => $cateogry
         ]);
     }
@@ -41,7 +43,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Category::create([
+            'category_name' => $request->category_name,
+            'admin_id' => auth('admin')->user()->id
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Category has added',
+            'category' => $category
+        ]);
     }
 
     /**
@@ -63,7 +74,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -75,21 +86,16 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cateogry = Category::find($id);
-        //$cateogry = Category::update(); //Salah
-        // $cateogry->update([
-        //     'category_name' => $request->category,
-        //     'admin_id' => $request->admin_id,
-        // ]);
-
-        if($request->category){
-            $cateogry->category_name = $request->category;
-        }
-        if($request->category){
-            $cateogry->admin_id = $request->category;
-        }
-        $cateogry->save();
-        
+        $category = Category::findorfail($id);
+        $category->update([
+            'category_name' => $request->category_name,
+            'admin_id' => auth('admin')->user()->id,
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Category has updated',
+            'category' => $category
+        ]);
     }
 
     /**
