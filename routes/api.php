@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => 'api', 'prefix' => 'customer' ], function ($router) {
+Route::group(['middleware' => 'api', 'prefix' => 'customer'], function ($router) {
     Route::post('register', [CustomerController::class, 'register']);
     Route::post('login', [CustomerController::class, 'login']);
     Route::post('logout', [CustomerController::class, 'logout']);
@@ -28,10 +29,12 @@ Route::group(['middleware' => 'api', 'prefix' => 'customer' ], function ($router
     Route::get('me', [CustomerController::class, 'show']);
 });
 
-Route::group(['middleware' => 'api', 'prefix' => 'admin' ], function ($router) {
+Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     Route::post('register', [AdminController::class, 'register']);
     Route::post('login', [AdminController::class, 'login']);
     Route::post('logout', [AdminController::class, 'logout']);
     // Route::post('refresh', 'AuthController@refresh');
     Route::get('me', [AdminController::class, 'me']);
 });
+
+Route::get('category', [CategoryController::class, 'index']);

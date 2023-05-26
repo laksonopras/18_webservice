@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ImagePartnerController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SquareFeedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('banner', [BannerController::class, 'index']);
+Route::get('category', [CategoryController::class, 'index']);
+Route::get('category/{id}', [CategoryController::class, 'show']);
+Route::get('banner', [BannerController::class, 'index']);
+Route::get('img_partner', [ImagePartnerController::class, 'index']);
+Route::get('square_feed', [SquareFeedController::class, 'index']);
