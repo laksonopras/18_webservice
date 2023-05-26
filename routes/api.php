@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+<<<<<<< HEAD
+use App\Http\Controllers\CategoryController;
+=======
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PartnerController;
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,16 +26,16 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => 'api', 'prefix' => 'user' ], function ($router) {
-    Route::post('register', [UserController::class, 'register']);
-    Route::post('login', [UserController::class, 'login']);
-    Route::post('logout', [UserController::class, 'logout']);
+Route::group(['middleware' => 'api', 'prefix' => 'customer' ], function ($router) {
+    Route::post('register', [CustomerController::class, 'register']);
+    Route::post('login', [CustomerController::class, 'login']);
+    Route::post('logout', [CustomerController::class, 'logout']);
     // Route::post('refresh', 'AuthController@refresh');
     Route::get('me', [UserController::class, 'show']);
     Route::get('category', [CategoryController::class, 'index']);
 });
 
-Route::group(['middleware' => 'api', 'prefix' => 'admin' ], function ($router) {
+Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     Route::post('register', [AdminController::class, 'register']);
     Route::post('login', [AdminController::class, 'login']);
     Route::post('logout', [AdminController::class, 'logout']);
@@ -47,6 +51,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin' ], function ($router) {
     // Route::post('refresh', 'AuthController@refresh');
 });
 
+<<<<<<< HEAD
+Route::get('category', [CategoryController::class, 'index']);
+=======
 Route::get('/partner/{id}', [PartnerController::class, 'index']);
 Route::delete('/partner/{id}', [PartnerController::class, 'destroy']);
 
+>>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00

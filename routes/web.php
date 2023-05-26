@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\PartnerController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ImagePartnerController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SquareFeedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +21,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/partner', [PartnerController::class, 'index']);

@@ -2,18 +2,10 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use App\Models\Categories;
+use App\Models\Banner;
 use Illuminate\Http\Request;
-=======
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Category;
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
 
-class CategoryController extends Controller
+class BannerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,21 +14,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-<<<<<<< HEAD
-        $category = Categories::all();
+        $banner = Banner::all();
         return response()->json([
             'status' => true,
-            'message' => 'input succes',
-            'categories' => $category
+            'message' => 'input success',
+            'banner' => $banner
         ], 400);
-=======
-        $cateogry = Category::all();
-        return response()->json([
-            'status' => true,
-            'message' => 'Show all Category',
-            'category' => $cateogry
-        ]);
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -57,15 +40,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create([
-            'category_name' => $request->category_name,
-            'admin_id' => auth('admin')->user()->id
+        $banner = Banner::create([
+            'img' => $request->banner,
+            'admin_id' => $request->admin_id
         ]);
-
         return response()->json([
             'status' => true,
-            'message' => 'Category has added',
-            'category' => $category
+            'message' => 'input success',
+            'banner' => $banner
+        ], 400);
     }
 
     /**
@@ -76,16 +59,12 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-<<<<<<< HEAD
-        $category = Categories::where('id', 'like', $id)->get()->first();
+        $banner = Banner::where('id', 'like', $id)->get()->first();
         return response()->json([
             'status' => true,
             'message' => 'input success',
-            'categories' => $category
+            'banner' => $banner
         ], 400);
-=======
-        //
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -108,21 +87,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cateogry = Category::find($id);
-        //$cateogry = Category::update(); //Salah
-        // $cateogry->update([
-        //     'category_name' => $request->category,
-        //     'admin_id' => $request->admin_id,
-        // ]);
+        $banner = Banner::find($id);
+        $banner->update([
+            'img' => $request->banner,
+            'admin_id' => $request->admin_id,
+        ]);
 
-        if($request->category){
-            $cateogry->category_name = $request->category;
+        if ($request->banner) {
+            $banner->img = $request->banner;
         }
-        if($request->category){
-            $cateogry->admin_id = $request->category;
+        if ($request->banner) {
+            $banner->admin_id = $request->admin_id;
         }
-        $cateogry->save();
-        
+        $banner->save();
     }
 
     /**
@@ -133,14 +110,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-<<<<<<< HEAD
-        Categories::destroy($id);
+        Banner::destroy($id);
         return response()->json([
             'status' => true,
             'message' => 'input success',
         ], 400);
-=======
-        
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 }

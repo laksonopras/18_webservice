@@ -2,18 +2,11 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use App\Models\Categories;
+use App\Models\ImagePartners;
+use App\Models\Img_partner;
 use Illuminate\Http\Request;
-=======
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Category;
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
 
-class CategoryController extends Controller
+class ImagePartnerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,21 +15,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-<<<<<<< HEAD
-        $category = Categories::all();
+        $img_partner = Img_partner::all();
         return response()->json([
             'status' => true,
-            'message' => 'input succes',
-            'categories' => $category
+            'message' => 'input success',
+            'img_partner' => $img_partner
         ], 400);
-=======
-        $cateogry = Category::all();
-        return response()->json([
-            'status' => true,
-            'message' => 'Show all Category',
-            'category' => $cateogry
-        ]);
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -46,7 +30,6 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -57,15 +40,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create([
-            'category_name' => $request->category_name,
-            'admin_id' => auth('admin')->user()->id
-        ]);
+        $img_partner = Img_partner::create([
+            'partner_id' => $request->partner_id_partner,
+            'img_path' => $request->img_partners
 
+        ]);
         return response()->json([
             'status' => true,
-            'message' => 'Category has added',
-            'category' => $category
+            'message' => 'input success',
+            'img_partner' => $img_partner
+        ], 400);
     }
 
     /**
@@ -76,16 +60,12 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-<<<<<<< HEAD
-        $category = Categories::where('id', 'like', $id)->get()->first();
+        $img_partner = Img_partner::all();
         return response()->json([
             'status' => true,
             'message' => 'input success',
-            'categories' => $category
+            'img_partner' => $img_partner
         ], 400);
-=======
-        //
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -108,21 +88,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cateogry = Category::find($id);
-        //$cateogry = Category::update(); //Salah
-        // $cateogry->update([
-        //     'category_name' => $request->category,
-        //     'admin_id' => $request->admin_id,
-        // ]);
+        $img_partner = Img_partner::find($id);
+        $img_partner->update([
+            'partner_id' => $request->partner_id,
+            'img_path' => $request->image_path
 
-        if($request->category){
-            $cateogry->category_name = $request->category;
-        }
-        if($request->category){
-            $cateogry->admin_id = $request->category;
-        }
-        $cateogry->save();
-        
+        ]);
+
+        $img_partner->save();
     }
 
     /**
@@ -133,14 +106,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-<<<<<<< HEAD
-        Categories::destroy($id);
+        Img_partner::destroy($id);
         return response()->json([
             'status' => true,
             'message' => 'input success',
         ], 400);
-=======
-        
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 }
