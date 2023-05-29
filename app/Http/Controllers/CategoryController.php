@@ -2,16 +2,8 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use App\Models\Categories;
-use Illuminate\Http\Request;
-=======
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -22,21 +14,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-<<<<<<< HEAD
-        $category = Categories::all();
+        $category = Category::all();
         return response()->json([
             'status' => true,
-            'message' => 'input succes',
-            'categories' => $category
-        ], 400);
-=======
-        $cateogry = Category::all();
-        return response()->json([
-            'status' => true,
-            'message' => 'Show all Category',
-            'category' => $cateogry
+            'message' => 'Show all category',
+            'category' => $category
         ]);
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -66,6 +49,7 @@ class CategoryController extends Controller
             'status' => true,
             'message' => 'Category has added',
             'category' => $category
+        ]);
     }
 
     /**
@@ -76,16 +60,12 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-<<<<<<< HEAD
-        $category = Categories::where('id', 'like', $id)->get()->first();
+        $category = Category::find($id);
         return response()->json([
             'status' => true,
-            'message' => 'input success',
+            'message' => 'Show category',
             'categories' => $category
         ], 400);
-=======
-        //
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
     }
 
     /**
@@ -108,20 +88,16 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $cateogry = Category::find($id);
-        //$cateogry = Category::update(); //Salah
-        // $cateogry->update([
-        //     'category_name' => $request->category,
-        //     'admin_id' => $request->admin_id,
-        // ]);
-
-        if($request->category){
-            $cateogry->category_name = $request->category;
-        }
-        if($request->category){
-            $cateogry->admin_id = $request->category;
-        }
-        $cateogry->save();
+        $category = Category::find($id);
+        $category->update([
+            'category_name' => $request->category_name,
+            'admin_id' => auth('admin')->user()->id
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Category has updated',
+            'categories' => $category
+        ]);
         
     }
 
@@ -133,14 +109,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-<<<<<<< HEAD
-        Categories::destroy($id);
+        Category::destroy($id);
         return response()->json([
             'status' => true,
-            'message' => 'input success',
-        ], 400);
-=======
-        
->>>>>>> 387bd9be6ad77b09ea9387ec27230b6f6beccf00
+            'message' => 'Category has deleted'
+        ]);
     }
 }

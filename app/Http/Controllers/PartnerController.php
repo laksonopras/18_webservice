@@ -10,31 +10,21 @@ use App\Models\Partner;
 
 class PartnerController extends Controller
 {
-
-    /**
-     * Triggers an action that is not logged yet.
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function _construct(){
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
+    public function store(Request $request)
     {
         $rules = array(
-            'username' => ['required'],
-            'email' => ['required', 'email', 'unique:partners'],
-            'password' => ['required', 'min:8'],
+            'partner_name' => ['required'],
             'address' => ['required'],
+            'avataer' => ['required'],
             'coordinate' => ['required', 'float'],
             'description' => ['required'],
+            'category_id' => ['required']
         );
         
         $validate = Validator::make($request->all(), $rules);
@@ -45,17 +35,18 @@ class PartnerController extends Controller
             ]);
         } else {
             $partner = partner::create([
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'partner_name' => $request->partnername,
+                'address' => $request->address,
+                'avatar' => $request->avatar,
+                'coordinate' => $request->coordinate,
+                'description' => $request->description,
+                'category_id' => $request->category_id,
+                'user_id' => auth('user')->user()->id
             ]);
             return response()->json([
                 'status' => true,
                 'message' => 'successfully register',
-                'partner' => [
-                    'username' => $partner->username,
-                    'email' => $partner->email
-                ]
+                'partner' => $partner
             ],400);
         }
     }

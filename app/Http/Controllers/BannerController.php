@@ -17,7 +17,7 @@ class BannerController extends Controller
         $banner = Banner::all();
         return response()->json([
             'status' => true,
-            'message' => 'input success',
+            'message' => 'Show all banner',
             'banner' => $banner
         ], 400);
     }
@@ -42,7 +42,7 @@ class BannerController extends Controller
     {
         $banner = Banner::create([
             'img' => $request->banner,
-            'admin_id' => $request->admin_id
+            'admin_id' => auth('admin')->user()->id
         ]);
         return response()->json([
             'status' => true,
@@ -59,12 +59,12 @@ class BannerController extends Controller
      */
     public function show($id)
     {
-        $banner = Banner::where('id', 'like', $id)->get()->first();
+        $banner = Banner::find($id);
         return response()->json([
             'status' => true,
-            'message' => 'input success',
+            'message' => 'Show banner successed',
             'banner' => $banner
-        ], 400);
+        ]);
     }
 
     /**
@@ -90,16 +90,13 @@ class BannerController extends Controller
         $banner = Banner::find($id);
         $banner->update([
             'img' => $request->banner,
-            'admin_id' => $request->admin_id,
+            'admin_id' => auth('admin')->user()->id
         ]);
-
-        if ($request->banner) {
-            $banner->img = $request->banner;
-        }
-        if ($request->banner) {
-            $banner->admin_id = $request->admin_id;
-        }
-        $banner->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'banner has updated',
+            'banner' => $banner
+        ]);
     }
 
     /**
@@ -113,7 +110,7 @@ class BannerController extends Controller
         Banner::destroy($id);
         return response()->json([
             'status' => true,
-            'message' => 'input success',
+            'message' => 'delete success',
         ], 400);
     }
 }

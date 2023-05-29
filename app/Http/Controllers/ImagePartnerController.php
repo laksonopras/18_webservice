@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ImagePartners;
 use App\Models\Img_partner;
 use Illuminate\Http\Request;
 

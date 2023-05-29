@@ -39,7 +39,7 @@ class UserController extends Controller
         if($validate->fails()){
             return response()->json([
                 'status' => false,
-                'message' => $validate->messages()->first()
+                'message' => $validate->messages()
             ]);
         } else {
             $user = User::create([
