@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Img_partner extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'partner_id', 'img_path'
+    ];
 }
