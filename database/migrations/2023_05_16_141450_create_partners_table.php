@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
             $table->string('partner_name');
+            $table->string('email');
+            $table->string('phone_number');
             $table->string('address');
             $table->string('avatar')->nullable();
-            $table->float('coordinate');
+            $table->float('coordinate')->nullable();
             $table->string('description');
             $table->integer('count_order')->default(0);
             $table->integer('account_status')->default(0);     // Status 0 karena belum aktivasi akun (belum bayar) 

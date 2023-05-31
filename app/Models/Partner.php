@@ -10,8 +10,10 @@ class Partner extends Model
     use HasFactory;
     protected $fillable = [
         'partner_name',
+        'email',
         'address',
         'avatar',
+        'phone_number',
         'coordinate',
         'description',
         'count_order',
@@ -19,6 +21,7 @@ class Partner extends Model
         'operational_status',
         'category_id',
         'admin_id',
+        'user_id',
         'token'
     ];
 
