@@ -6,6 +6,8 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ImagePartnerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SquareFeedController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +23,5 @@ use App\Http\Controllers\SquareFeedController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('review', [ReviewController::class, 'index']);
+Route::get('transaction', [TransactionController::class, 'index']);

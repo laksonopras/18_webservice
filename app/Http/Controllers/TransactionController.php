@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Banner;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class BannerController extends Controller
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,11 @@ class BannerController extends Controller
      */
     public function index()
     {
-        $banner = Banner::all();
+        $transaction = Transaction::all();
         return response()->json([
             'status' => true,
-            'message' => 'Show all banner',
-            'banner' => $banner
+            'message' => 'Show all transaction',
+            'transaction' => $transaction
         ], 400);
     }
 
@@ -40,14 +40,17 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        $banner = Banner::create([
-            'img' => $request->banner,
-            'admin_id' => auth('admin')->user()->id
+        $transaction = Transaction::create([
+            'quantity' => $request->quantity,
+            'admin_id' => auth('admin')->user()->id,
+            'sub_price' => $request->sub_price,
+            'price' => $request->price,
+            'partner_id' => $request->partner_id
         ]);
         return response()->json([
             'status' => true,
             'message' => 'input success',
-            'banner' => $banner
+            'transaction' => $transaction
         ], 400);
     }
 
@@ -59,11 +62,11 @@ class BannerController extends Controller
      */
     public function show($id)
     {
-        $banner = Banner::find($id);
+        $transaction = Transaction::find($id);
         return response()->json([
             'status' => true,
-            'message' => 'Show banner success',
-            'banner' => $banner
+            'message' => 'Show transaction success',
+            'transaction' => $transaction
         ]);
     }
 
@@ -87,15 +90,18 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $banner = Banner::find($id);
-        $banner->update([
-            'img' => $request->banner,
-            'admin_id' => auth('admin')->user()->id
+        $transaction = Transaction::find($id);
+        $transaction->update([
+            'quantity' => $request->quantity,
+            'admin_id' => auth('admin')->user()->id,
+            'sub_price' => $request->sub_price,
+            'price' => $request->price,
+            'partner_id' => $request->partner_id
         ]);
         return response()->json([
             'status' => true,
-            'message' => 'banner has updated',
-            'banner' => $banner
+            'message' => 'transaction has updated',
+            'transaction' => $transaction
         ]);
     }
 
@@ -107,7 +113,7 @@ class BannerController extends Controller
      */
     public function destroy($id)
     {
-        Banner::destroy($id);
+        Transaction::destroy($id);
         return response()->json([
             'status' => true,
             'message' => 'delete success',
