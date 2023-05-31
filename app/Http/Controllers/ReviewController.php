@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Banner;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
-class BannerController extends Controller
+class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,11 @@ class BannerController extends Controller
      */
     public function index()
     {
-        $banner = Banner::all();
+        $review = Review::all();
         return response()->json([
             'status' => true,
-            'message' => 'Show all banner',
-            'banner' => $banner
+            'message' => 'Show all review',
+            'review' => $review
         ], 400);
     }
 
@@ -40,14 +40,16 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        $banner = Banner::create([
-            'img' => $request->banner,
-            'admin_id' => auth('admin')->user()->id
+        $review = Review::create([
+            'user_id' => $request->user_id,
+            'partner_id' => $request->partner_id,
+            'rating' => $request->rating,
+            'description' => $request->description
         ]);
         return response()->json([
             'status' => true,
             'message' => 'input success',
-            'banner' => $banner
+            'review' => $review
         ], 400);
     }
 
@@ -59,11 +61,11 @@ class BannerController extends Controller
      */
     public function show($id)
     {
-        $banner = Banner::find($id);
+        $review = Review::find($id);
         return response()->json([
             'status' => true,
-            'message' => 'Show banner success',
-            'banner' => $banner
+            'message' => 'Show review success',
+            'review' => $review
         ]);
     }
 
@@ -87,15 +89,17 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $banner = Banner::find($id);
-        $banner->update([
-            'img' => $request->banner,
-            'admin_id' => auth('admin')->user()->id
+        $review = Review::find($id);
+        $review->update([
+            'user_id' => $request->user_id,
+            'partner_id' => $request->partner_id,
+            'rating' => $request->rating,
+            'description' => $request->description
         ]);
         return response()->json([
             'status' => true,
-            'message' => 'banner has updated',
-            'banner' => $banner
+            'message' => 'review has updated',
+            'review' => $review
         ]);
     }
 
@@ -107,7 +111,7 @@ class BannerController extends Controller
      */
     public function destroy($id)
     {
-        Banner::destroy($id);
+        Review::destroy($id);
         return response()->json([
             'status' => true,
             'message' => 'delete success',
