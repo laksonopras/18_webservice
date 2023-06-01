@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Storage;
+
 class PartnerController extends Controller
 {
 
@@ -27,9 +28,9 @@ class PartnerController extends Controller
             'description' => ['required'],
             'category_id' => ['required']
         );
-        
+
         $validate = Validator::make($request->all(), $rules);
-        if($validate->fails()){
+        if ($validate->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => $validate->messages()->first()
@@ -86,11 +87,12 @@ class PartnerController extends Controller
     public function show()
     {
         $partner = auth('partner')->user();
-        if($partner){
+        if ($partner) {
             return response()->json([
                 'status' => true,
                 'message' => 'Show All Data',
                 'partner' => $partner
+
             ]);
         }
         return response()->json([
@@ -98,6 +100,25 @@ class PartnerController extends Controller
             'message' => 'Unauthorized'
         ]);
     }
+
+    public function showDetail($id)
+    {
+        $partner = Partner::with(['category', 'admin'])->find($id);
+
+        if (!$partner) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Partner not found.'
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Partner details retrieved successfully.',
+            'partner' => $partner
+        ]);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -117,9 +138,9 @@ class PartnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -134,11 +155,6 @@ class PartnerController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'partner telah dihapus'
-        ],400);
-    }
-    public function getAvatar($id){
-        $partner = Partner::find($id);
-        return response()->file( Storage::disk('local')->path($partner->avatar)); //PAKE YANG INI
-        //return response()->json($user);
+        ]);
     }
 }
