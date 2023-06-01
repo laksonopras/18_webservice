@@ -93,7 +93,7 @@ class PartnerController extends Controller
 
     public function showDetail($id)
     {
-        $partner = Partner::with(['category', 'admin'])->find($id);
+        $partner = Partner::with(['category', 'user'])->find($id);
 
         if (!$partner) {
             return response()->json([
@@ -128,11 +128,29 @@ class PartnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        dd($request);
-        // $partner = Partner::find($id);
+        $partner = Partner::find($id);
+        // dd($partner);
+        $partner->partner_name = $request->input('partner_name');
+        $partner->email = $request->input('email');
+        $partner->coordinate = $request->input('coordinate');
+        $partner->count_order = $request->input('count_order');
+        $partner->account_status = $request->input('account_status');
+        $partner->operational_status = $request->input('operational_status');
+        $partner->address = $request->input('address');
+        $partner->description = $request->input('description');
+        $partner->save();
+
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'partner telah diupdate'
+            ],
+            200
+        );
     }
+
 
     /**
      * Remove the specified resource from storage.
