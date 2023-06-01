@@ -123,14 +123,15 @@ class PartnerController extends Controller
 
     public function showDetail($id)
     {
-
-        $partner = Partner::with(['category', 'admin'])->find($id);
+        $partner = Partner::with(['category', 'user'])->find($id);
+        // dd($partner);
         if (!$partner) {
             return response()->json([
                 'status' => false,
                 'message' => 'Partner not found.'
-            ]);
+            ], 404);
         }
+
         return response()->json([
             'status' => true,
             'message' => 'Partner details retrieved successfully.',
@@ -158,42 +159,43 @@ class PartnerController extends Controller
      */
 
 
-    public function updateForUser(Request $request){
+    public function updateForUser(Request $request)
+    {
         $partner = Partner::find(auth('user')->user()->id);
-        if($request->partner_name){
+        if ($request->partner_name) {
             $partner->partner_name = $request->partner_name;
         }
-        if($request->email){
+        if ($request->email) {
             $partner->email = $request->email;
         }
-        if($request->phone_number){
+        if ($request->phone_number) {
             $partner->phone_number = $request->phone_number;
         }
-        if($request->address){
+        if ($request->address) {
             $partner->address = $request->address;
         }
-        if($request->coordinate){
+        if ($request->coordinate) {
             $partner->coordinate = $request->coordinate;
         }
-        if($request->file('avatar')){
-            if($partner->avatar && Storage::exists($partner->avatar)){
+        if ($request->file('avatar')) {
+            if ($partner->avatar && Storage::exists($partner->avatar)) {
                 Storage::delete($partner->avatar);
             }
             $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
         }
-        if($request->coordinate){
+        if ($request->coordinate) {
             $partner->coordinate = $request->coordinate;
         }
-        if($request->description){
+        if ($request->description) {
             $partner->description = $request->description;
         }
-        if($request->operational_status){
+        if ($request->operational_status) {
             $partner->operational_status = $request->operational_status;
         }
         $partner->save();
         return response()->json([
             'status' => true,
-            'message' =>'succes',
+            'message' => 'succes',
             'partner' => $partner
         ]);
     }
@@ -201,41 +203,41 @@ class PartnerController extends Controller
     public function updateForAdmin(Request $request, $id)
     {
         $partner = Partner::find($id);
-        if($request->partner_name){
+        if ($request->partner_name) {
             $partner->partner_name = $request->partner_name;
         }
-        if($request->email){
+        if ($request->email) {
             $partner->email = $request->email;
         }
-        if($request->phone_number){
+        if ($request->phone_number) {
             $partner->phone_number = $request->phone_number;
         }
-        if($request->address){
+        if ($request->address) {
             $partner->address = $request->address;
         }
-        if($request->coordinate){
+        if ($request->coordinate) {
             $partner->coordinate = $request->coordinate;
         }
-        if($request->file('avatar')){
-            if($partner->avatar && Storage::exists($partner->avatar)){
+        if ($request->file('avatar')) {
+            if ($partner->avatar && Storage::exists($partner->avatar)) {
                 Storage::delete($partner->avatar);
             }
             $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
         }
-        if($request->description){
+        if ($request->description) {
             $partner->description = $request->description;
         }
-        if($request->operational_status){
+        if ($request->operational_status) {
             $partner->operational_status = $request->operational_status;
         }
-        if($request->count_order){
+        if ($request->count_order) {
             $partner->count_order = $request->count_order;
         }
-        if($request->account_status){
+        if ($request->account_status) {
             $partner->account_status = $request->account_status;
         }
-        if($request->request_status){
-            if($request->request_status == 0 ){
+        if ($request->request_status) {
+            if ($request->request_status == 0) {
                 $user = User::find(auth('user')->user()->id);
                 $user->update(['role' => 0]);
             }
@@ -244,7 +246,7 @@ class PartnerController extends Controller
         $partner->save();
         return response()->json([
             'status' => true,
-            'message' =>'succes',
+            'message' => 'succes',
             'partner' => $partner
         ]);
     }
