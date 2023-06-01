@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SquareFeedController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\CallController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,4 @@ Route::get('/', function () {
 });
 Route::get('review', [ReviewController::class, 'index']);
 Route::get('transaction', [TransactionController::class, 'index']);
+Route::get('call', [CallController::class, 'index']);
