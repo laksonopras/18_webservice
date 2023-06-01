@@ -66,14 +66,13 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     //partner
     Route::get('/partner', [PartnerController::class, 'index']);
     Route::get('/partner/{id}', [PartnerController::class, 'showDetail']);
+
     Route::get('/partner/active', [PartnerController::class, 'getActivePartner']);
     Route::get('/partner/unactive', [PartnerController::class, 'getUnactivePartner']);
     Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']);
     Route::put('/partner/{id}', [PartnerController::class, 'updateForAdmin']);
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']);
 });
-
-
 
 Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     //authentication
