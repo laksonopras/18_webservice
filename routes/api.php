@@ -71,6 +71,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     Route::get('/partner/unactive', [PartnerController::class, 'getUnactivePartner']); //menampilkan partner yang belum aktivasi
     Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan partner yang sudah buka
     Route::put('/partner/{id}', [PartnerController::class, 'updateForAdmin']); //memperbarui data partner
+    Route::post('/partner/{id}', [PartnerController::class, 'destroy']); //menghapus data partner
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan foto profil partner
 });
 
