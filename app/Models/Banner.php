@@ -10,7 +10,7 @@ class Banner extends Model
     use HasFactory;
 
     protected $fillable = [
-        'img', 'admin_id'
+        'img_path', 'admin_id'
     ];
 
     public function admin(){

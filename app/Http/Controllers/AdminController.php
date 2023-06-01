@@ -2,36 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Admin;
+use Illuminate\Validation\Rules;
 
 class AdminController extends Controller
 {
-
-    /**
-     * Triggers an action that is not logged yet.
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function _construct(){
+    public function _construct() {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function register(Request $request)
-    {
+    public function register(Request $request) {
         $rules = array(
             'username' => ['required'],
             'email' => ['required', 'email', 'unique:admins'],
-            'password' => ['required', 'min:8'],
+            'password' => ['required', Rules\Password::defaults()]
         );
         
         $validate = Validator::make($request->all(), $rules);
@@ -54,100 +43,95 @@ class AdminController extends Controller
         }
     }
 
-    /**
-     * Authentication for a user.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function login(Request $request){
-        $credentials = request(['email', 'password']);
-
-        if (!$token = Auth::guard('admin')->attempt($credentials)) {
+    public function login(Request $request) {
+        $rules = array(
+            'email' => ['required', 'email'],
+            'password' => ['required', Rules\Password::defaults()]
+        );
+        $validate = Validator::make($request->all(), $rules);
+        if($validate->fails()){
             return response()->json([
                 'status' => false,
-                'message' => 'Unauthorized'
+                'message' => $validate->messages()->first()
+            ]);
+        } else {
+            $credentials = request(['email', 'password']);
+            if (!$token = Auth::guard('admin')->attempt($credentials)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Email and password invalid.'
+                ]);
+            }
+            $admin = Admin::where('email', $request->email)->first();
+            $admin->token = $token; 
+            $admin->save();      
+            return response()->json([
+                'status' => true,
+                'message' => 'successfully login',
+                'token' => $admin->token,
+                'admin' => $admin
             ]);
         }
-        $admin = Admin::where('email', $request->email)->first();
-        $admin->token = $token; 
-        $admin->save();      
-        return response()->json([
-            'status' => true,
-            'message' => 'successfully login',
-            'token' => $admin->token,
-            'admin' => $admin
-        ], 200);
     }
 
-    public function logout()
-    {
-
+    public function logout() {
+        $admin = Admin::where('email', auth('admin')->user()->email)->first();
+        $admin->token = null; 
+        $admin->save(); 
         auth('admin')->logout();
         return response()->json([
             'status' => true,
             'message' => 'Successfully logged out'
-        ], 200);
-        
+        ]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+    public function index() {
         $admin = Admin::all();
         return response()->json([
             'status' => true,
             'message' => 'Show all admin',
             'admin' => $admin
-        ], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-        $admin = auth('admin')->user();
-        if($admin){
-            return response()->json([
-                'status' => true,
-                'message' => 'Show All Data',
-                'admin' => $admin
-            ],400);
-        }
-        return response()->json([
-            'status' => false,
-            'message' => 'Unauthorized'
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function getByToken()
     {
-        //
+        $admin = Admin::find(auth('admin')->user()->id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all data',
+            'admin' => $admin
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function getById($id)
     {
-        //
+        $admin = Admin::find($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all data',
+            'admin' => $admin
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $admin = Admin::find(auth('admin')->user()->id);
+        if($request->username){
+            $admin->username = $request->username;
+        }
+        if($request->file('avatar')){
+            if($admin->avatar && Storage::exists($admin->avatar)){
+                Storage::delete($admin->avatar);
+            }
+            $admin->avatar = Storage::putFile('admin', $request->file('avatar'));
+        }
+        $admin->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all data',
+            'admin' => $admin
+        ]);
     }
 
     /**

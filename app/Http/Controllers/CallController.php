@@ -19,7 +19,7 @@ class CallController extends Controller
             'status' => true,
             'message' => 'Show all Call',
             'Call' => $call
-        ], 400);
+        ]);
     }
 
     /**
@@ -40,19 +40,19 @@ class CallController extends Controller
      */
     public function store(Request $request)
     {
-
         $call = Call::create([
-            'user_id' => $request->user_id,
+            'user_id' => $request->auth('user')->user()->id,
             'partner_id' => $request->partner_id,
-            'user_coordinate' => $request->user_coordinate,
-            'order_status' => $request->sub_price,
+            'user_coordinate' => 0,
+            'order_status' => $request->order_status,
+            'message' => $request->message
 
         ]);
         return response()->json([
             'status' => true,
-            'message' => 'input success',
+            'message' => 'your call is being processed',
             'call' => $call
-        ], 400);
+        ]);
     }
 
     /**
@@ -66,7 +66,7 @@ class CallController extends Controller
         $call = Call::find($id);
         return response()->json([
             'status' => true,
-            'message' => 'Show Call success',
+            'message' => 'Show all data',
             'call' => $call
         ]);
     }
@@ -77,9 +77,23 @@ class CallController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function historyUser()
     {
-        //
+        $call = Call::where('user_id', auth('user')->user()->id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all data',
+            'call' => $call
+        ]);
+    }
+    public function historPartner($id)
+    {
+        $call = Call::where('partner_id', $id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all data',
+            'call' => $call
+        ]);
     }
 
     /**
@@ -93,14 +107,11 @@ class CallController extends Controller
     {
         $call = Call::find($id);
         $call->update([
-            'user_id' => $request->user_id,
-            'partner_id' => $request->partner_id,
-            'user_coordinate' => $request->user_coordinate,
-            'order_status' => $request->sub_price,
+            'order_status' => $request->order_status,
         ]);
         return response()->json([
             'status' => true,
-            'message' => 'Call has updated',
+            'message' => 'progress has been continued',
             'call' => $call
         ]);
     }
@@ -117,6 +128,6 @@ class CallController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'delete success',
-        ], 400);
+        ]);
     }
 }

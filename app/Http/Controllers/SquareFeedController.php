@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SquareFeeds;
+use App\Models\SquareFeed;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
 
 class SquareFeedController extends Controller
 {
@@ -14,12 +17,12 @@ class SquareFeedController extends Controller
      */
     public function index()
     {
-        $square_feed = SquareFeeds::all();
+        $squarefeed = squarefeed::all();
         return response()->json([
             'status' => true,
-            'message' => 'input success',
-            'square_feed' => $square_feed
-        ], 400);
+            'message' => 'Show all squarefeed',
+            'squarefeed' => $squarefeed
+        ]);
     }
 
     /**
@@ -40,7 +43,27 @@ class SquareFeedController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = array(
+            'image' => ['required', File::types(['jpg', 'jpeg', 'png', 'gif'])->max(12 * 1024)]
+        );
+
+        $validate = Validator::make($request->all(), $rules);
+        if($validate->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => $validate->messages()->first()
+            ]);
+        } else {
+            $squarefeed = SquareFeed::create([
+                'img_path' => Storage::putFile('squarefeed', $request->file('image')),
+                'admin_id' => auth('admin')->user()->id
+            ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'input success',
+                'squarefeed' => $squarefeed
+            ]);
+        }
     }
 
     /**
@@ -74,7 +97,30 @@ class SquareFeedController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = array(
+            'image' => ['required', File::types(['jpg', 'jpeg', 'png', 'gif'])->max(12 * 1024)]
+        );
+
+        $validate = Validator::make($request->all(), $rules);
+        if($validate->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => $validate->messages()->first()
+            ]);
+        } else {
+            $squarefeed = SquareFeed::find($id);
+            if($squarefeed->img_path && Storage::exists($squarefeed->img_path)){
+                Storage::delete($squarefeed->img_path);
+            }
+            $squarefeed->img_path = Storage::putFile('squarefeed', $request->file('image'));
+            $squarefeed->save();
+            return response()->json([
+                'status' => true,
+                'message' => 'squarefeed has updated'
+            ]);
+
+        }
+
     }
 
     /**
@@ -83,8 +129,14 @@ class SquareFeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id) 
     {
-        //
+        $squarefeed = SquareFeed::find($id);
+        $delete = Storage::delete($squarefeed->img_path);
+        $squarefeed->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'delete success',
+        ]);
     }
 }

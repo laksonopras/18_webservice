@@ -13,7 +13,7 @@ class Transaction extends Model
     public $incrementing = false;
 
     protected $fillable = [ 
-        'quantity', 'sub_price', 'price', 'partner_id', 'admin_id'
+        'id','quantity', 'sub_price', 'price', 'partner_id', 'admin_id', 'payment_proof', 'status'
     ];
     
     public function admin(){

@@ -32,4 +32,7 @@ class Partner extends Model
         return $this->belongsTo(Admin::class);
     }
     
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

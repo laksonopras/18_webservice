@@ -10,7 +10,7 @@ class DateStatus extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date_start', 'date_end', 'transaction_id', 'partner_id', 'transaction_id'
+        'date_start', 'date_end', 'transaction_id', 'partner_id'
     ];
 
     public function partner(){

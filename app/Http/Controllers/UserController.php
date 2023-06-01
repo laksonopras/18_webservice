@@ -10,6 +10,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 
+
 class UserController extends Controller
 {
 
@@ -110,18 +111,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function getAvatar($id){
-
-        $user = User::find($id);
-        return response()->file( Storage::disk('local')->path($user->avatar)); //PAKE YANG INI
-    }
-    public function getUserAvatar(){
-
-        $user = User::find(auth('user')->user()->id);
-        return response()->file( Storage::disk('local')->path($user->avatar)); //PAKE YANG INI
-        //return response()->json($user);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -143,19 +132,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function getByToken()
     {
-        $user = auth('user')->user();
-        if($user){
-            return response()->json([
-                'status' => true,
-                'message' => 'Show All Data',
-                'user' => $user
-            ]);
-        }
+        $user = User::find(auth('user')->user()->id);
         return response()->json([
-            'status' => false,
-            'message' => 'Unauthorized'
+            'status' => true,
+            'message' => 'Show all data',
+            'user' => $user
+        ]);
+    }
+
+    public function getById($id)
+    {
+        $user = User::find($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all data',
+            'user' => $user
         ]);
     }
 
@@ -208,8 +201,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
+        $user = User::destroy($id);
         return response()->json([
             'status' => true,
             'message' => 'User has deleted'

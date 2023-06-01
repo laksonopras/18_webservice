@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('partner_id')->references('id')->on('partners')->onDelete('cascade');
             $table->float('user_coordinate');
             $table->integer('order_status')->default(0);
+            $table->string('message');
             $table->timestamps();
         });
     }

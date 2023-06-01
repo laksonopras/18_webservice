@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('banners', function (Blueprint $table) {
             $table->id();
-            $table->string('img');
+            $table->string('img_path');
             $table->foreignId('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->timestamps();
         });

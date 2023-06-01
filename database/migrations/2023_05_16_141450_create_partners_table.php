@@ -20,11 +20,12 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('address');
             $table->string('avatar')->nullable();
-            $table->float('coordinate')->nullable();
+            $table->float('coordinate');
             $table->string('description');
             $table->integer('count_order')->default(0);
             $table->integer('account_status')->default(0);     // Status 0 karena belum aktivasi akun (belum bayar) 
             $table->integer('operational_status')->default(0); // Status 0 karena toko sedang tutup
+            $table->integer('request_status')->nullable();     // null masih digantung, 0 ditolak, 1, diterima 
             $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

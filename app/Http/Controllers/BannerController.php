@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
 
 class BannerController extends Controller
 {
@@ -19,7 +22,7 @@ class BannerController extends Controller
             'status' => true,
             'message' => 'Show all banner',
             'banner' => $banner
-        ], 400);
+        ]);
     }
 
     /**
@@ -40,15 +43,27 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        $banner = Banner::create([
-            'img' => $request->banner,
-            'admin_id' => auth('admin')->user()->id
-        ]);
-        return response()->json([
-            'status' => true,
-            'message' => 'input success',
-            'banner' => $banner
-        ], 400);
+        $rules = array(
+            'image' => ['required', File::types(['jpg', 'jpeg', 'png', 'gif'])->max(12 * 1024)]
+        );
+
+        $validate = Validator::make($request->all(), $rules);
+        if($validate->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => $validate->messages()->first()
+            ]);
+        } else {
+            $banner = Banner::create([
+                'img_path' => Storage::putFile('banner', $request->file('image')),
+                'admin_id' => auth('admin')->user()->id
+            ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'input success',
+                'banner' => $banner
+            ]);
+        }
     }
 
     /**
@@ -59,12 +74,7 @@ class BannerController extends Controller
      */
     public function show($id)
     {
-        $banner = Banner::find($id);
-        return response()->json([
-            'status' => true,
-            'message' => 'Show banner success',
-            'banner' => $banner
-        ]);
+        
     }
 
     /**
@@ -87,16 +97,30 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $banner = Banner::find($id);
-        $banner->update([
-            'img' => $request->banner,
-            'admin_id' => auth('admin')->user()->id
-        ]);
-        return response()->json([
-            'status' => true,
-            'message' => 'banner has updated',
-            'banner' => $banner
-        ]);
+        $rules = array(
+            'image' => ['required', File::types(['jpg', 'jpeg', 'png', 'gif'])->max(12 * 1024)]
+        );
+
+        $validate = Validator::make($request->all(), $rules);
+        if($validate->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => $validate->messages()->first()
+            ]);
+        } else {
+            $banner = Banner::find($id);
+            if($banner->img_path && Storage::exists($banner->img_path)){
+                Storage::delete($banner->img_path);
+            }
+            $banner->img_path = Storage::putFile('banner', $request->file('image'));
+            $banner->save();
+            return response()->json([
+                'status' => true,
+                'message' => 'Banner has updated'
+            ]);
+
+        }
+
     }
 
     /**
@@ -107,10 +131,12 @@ class BannerController extends Controller
      */
     public function destroy($id)
     {
-        Banner::destroy($id);
+        $banner = Banner::find($id);
+        $delete = Storage::delete($banner->img_path);
+        $banner->delete();
         return response()->json([
             'status' => true,
             'message' => 'delete success',
-        ], 400);
+        ]);
     }
 }

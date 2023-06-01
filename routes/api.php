@@ -5,7 +5,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\BannerController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\CallController;
+use App\Http\Controllers\GetPictController;
+use App\Http\Controllers\SquareFeedController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,38 +25,16 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
-    Route::post('register', [UserController::class, 'register']);
-    Route::post('login', [UserController::class, 'login']);
-    Route::post('logout', [UserController::class, 'logout']);
-    Route::get('me', [UserController::class, 'show']);
-    Route::get('category', [CategoryController::class, 'index']);
-
-    Route::post('editProfile', [UserController::class, 'update']);
-    Route::get('avatar/{id}', [UserController::class, 'getAvatar']);
-    Route::get('avatar', [UserController::class, 'getUserAvatar']);
-
-    Route::post('mitra', [PartnerController::class, 'store']);
-
-    Route::get('/partner',      [PartnerController::class, 'index']);
-    Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']);
-    Route::get('/partner/avatar/{id}', [PartnerController::class, 'getAvatar']);
-});
-
 Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
+    //Authentication
+    Route::post('register', [AdminController::class, 'register']); //verified
+    Route::post('login', [AdminController::class, 'login']); //verified
+    Route::post('logout', [AdminController::class, 'logout']); //verified
 
-    //authentication
-    Route::post('register', [AdminController::class, 'register']);
-    Route::post('login', [AdminController::class, 'login']);
-    Route::post('logout', [AdminController::class, 'logout']);
-    Route::get('me', [AdminController::class, 'me']);
-
-
-    //Customer
-    Route::get('customer', [UserController::class, 'index']);
-    Route::get('customer/avatar/{id}', [UserController::class, 'getAvatar']);
-    Route::get('customer/{id}', [UserController::class, 'show']);
-    Route::delete('customer/{id}', [UserController::class, 'destroy']);
+    //My Profile
+    Route::get('me', [AdminController::class, 'getByToken']); //verified
+    Route::get('avatar', [GetPictController::class, 'getAdminbyToken']); //verified
+    Route::post('update', [AdminController::class, 'update']); //verified
 
     //Category
     Route::get('category', [CategoryController::class, 'index']);
@@ -65,20 +45,60 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
 
     //Banner
     Route::get('banner', [BannerController::class, 'index']);
-    Route::get('banner/{id}', [BannerController::class, 'show']);
+    Route::get('banner/{id}', [GetPictController::class, 'getBanner']);
     Route::post('banner/', [BannerController::class, 'store']);
-    Route::put('banner/{id}', [BannerController::class, 'update']);
+    Route::post('banner/{id}', [BannerController::class, 'update']);
     Route::delete('banner/{id}', [BannerController::class, 'destroy']);
 
+    //Banner
+    Route::get('sq', [SquareFeedController::class, 'index']);
+    Route::get('sq/{id}', [GetPictController::class, 'getSquareFeed']);
+    Route::post('sq/', [SquareFeedController::class, 'store']);
+    Route::post('sq/{id}', [SquareFeedController::class, 'update']);
+    Route::delete('sq/{id}', [SquareFeedController::class, 'destroy']);
 
-    // Route::post('refresh', 'AuthController@refresh');
+    //Customer
+    Route::get('user', [UserController::class, 'index']);
+    Route::get('user/avatar/{id}', [GetPictController::class, 'getUserbyId']);
+    Route::get('user/{id}', [UserController::class, 'getById']);
+    Route::delete('user/{id}', [UserController::class, 'destroy']);
+
+    //partner
     Route::get('/partner', [PartnerController::class, 'index']);
     Route::get('/partner/{id}', [PartnerController::class, 'showDetail']);
-    Route::patch('/partner', [PartnerController::class, 'update']);
-    Route::get('/partner/avatar/{id}', [PartnerController::class, 'getAvatar']);
+    Route::get('/partner/active', [PartnerController::class, 'getActivePartner']);
+    Route::get('/partner/unactive', [PartnerController::class, 'getUnactivePartner']);
+    Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']);
+    Route::put('/partner/{id}', [PartnerController::class, 'updateForAdmin']);
+    Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']);
 });
 
-Route::delete('/partner/{id}', [PartnerController::class, 'destroy']);
 
 
-Route::get('category', [CategoryController::class, 'index']);
+Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
+    //authentication
+    Route::post('register', [UserController::class, 'register']);
+    Route::post('login', [UserController::class, 'login']);
+    Route::post('logout', [UserController::class, 'logout']);
+
+    //My Profile
+    Route::get('me', [UserController::class, 'show']);
+    Route::get('avatar', [GetPictController::class, 'getUserbyToken']);
+    Route::post('update', [UserController::class, 'update']);
+
+    //category
+    Route::get('category', [CategoryController::class, 'index']);
+
+    //partner
+    Route::get('/partner/active', [PartnerController::class, 'getActivePartner']); //menampilkan daftar partner yang aktif
+    Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan daftar partner yang buka
+    Route::put('/partner',      [PartnerController::class, 'updateForUser']); //memperbarui informasi partner
+    Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
+    Route::get('/partner/you', [GetPictController::class, 'show']); //menampilkan mitranya sendiri
+
+    //call
+    Route::post('/call', [CallController::class, 'store']); //membuat panggilan
+    Route::get('/call', [CallController::class, 'historyUser']); //Histori panggilan pengguna
+    Route::get('/call/{id}', [CallController::class, 'historyUser']); //histori panggilan partner
+    Route::put('/call/{id}', [CallController::class, 'update']); //histori panggilan partner
+});
