@@ -66,14 +66,15 @@ class AdminController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthorized'
-            ], 401);
+            ]);
         }
-        $admin = admin::where('email', $request->email)->first();
+        $admin = Admin::where('email', $request->email)->first();
         $admin->token = $token; 
         $admin->save();      
         return response()->json([
             'status' => true,
             'message' => 'successfully login',
+            'token' => $admin->token,
             'admin' => $admin
         ], 200);
     }
@@ -86,6 +87,7 @@ class AdminController extends Controller
             'status' => true,
             'message' => 'Successfully logged out'
         ], 200);
+        
     }
 
     /**

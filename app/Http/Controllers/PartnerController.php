@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Partner;
-
+use Illuminate\Support\Facades\Storage;
 class PartnerController extends Controller
 {
+
     /**
      * Store a newly created resource in storage.
      *
@@ -21,8 +22,8 @@ class PartnerController extends Controller
         $rules = array(
             'partner_name' => ['required'],
             'address' => ['required'],
-            'avataer' => ['required'],
-            'coordinate' => ['required', 'float'],
+            'avatar' => ['required'],
+            'phone_number' => ['required'],
             'description' => ['required'],
             'category_id' => ['required']
         );
@@ -35,10 +36,11 @@ class PartnerController extends Controller
             ]);
         } else {
             $partner = partner::create([
-                'partner_name' => $request->partnername,
+                'partner_name' => $request->partner_name,
+                'email' => $request->email,
                 'address' => $request->address,
-                'avatar' => $request->avatar,
-                'coordinate' => $request->coordinate,
+                'avatar' => Storage::putFile('avatar_partner', $request->file('avatar')),
+                'phone_number' => $request->phone_number,
                 'description' => $request->description,
                 'category_id' => $request->category_id,
                 'user_id' => auth('user')->user()->id
@@ -47,43 +49,8 @@ class PartnerController extends Controller
                 'status' => true,
                 'message' => 'successfully register',
                 'partner' => $partner
-            ],400);
+            ]);
         }
-    }
-
-    /**
-     * Authentication for a user.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function login(Request $request){
-        $credentials = request(['email', 'password']);
-
-        if (!$token = Auth::guard('partner')->attempt($credentials)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Unauthorized'
-            ], 401);
-        }
-        $partner = Partner::where('email', $request->email)->first();
-        $partner->token = $token; 
-        $partner->save();      
-        return response()->json([
-            'status' => true,
-            'message' => 'successfully login',
-            'partner' => $partner
-        ],400);
-    }
-
-    public function logout()
-    {
-
-        auth('partner')->logout();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Successfully logged out'
-        ]);
     }
 
     /**
@@ -91,14 +58,14 @@ class PartnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
         $partner = Partner::with(['category', 'admin'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
             'partner' => $partner
-        ],400);
+        ]);
     }
 
     /**
@@ -159,5 +126,10 @@ class PartnerController extends Controller
             'status' => true,
             'message' => 'partner telah dihapus'
         ],400);
+    }
+    public function getAvatar($id){
+        $partner = Partner::find($id);
+        return response()->file( Storage::disk('local')->path($partner->avatar)); //PAKE YANG INI
+        //return response()->json($user);
     }
 }

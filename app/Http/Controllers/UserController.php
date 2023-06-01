@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -34,7 +35,7 @@ class UserController extends Controller
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8'],
         );
-        
+
         $validate = Validator::make($request->all(), $rules);
         if($validate->fails()){
             return response()->json([
@@ -45,7 +46,7 @@ class UserController extends Controller
             $user = User::create([
                 'username' => $request->username,
                 'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
             ]);
             return response()->json([
                 'status' => true,
@@ -83,19 +84,42 @@ class UserController extends Controller
     public function logout()
     {
 
-        try{
-            auth('user')->logout();
-            return response()->json([
-                'status' => true,
-                'message' => 'Successfully logged out'
-            ],200);
-        } catch (Exception $exception){
-            return response()->json([
-                'status' => true,
-                'message' => 'Your token has expired'
-            ]);
+        auth('user')->logout();
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully logged out'
+        ],200);
+    }
+
+    public function setAvatar(Request $request){
+        $user = User::find(auth('user')->user()->id);
+        if($user->avatar && Storage::exists($user->avatar)){
+            Storage::delete($user->avatar);
         }
-        
+        $user->avatar = Storage::putFile('avatar', $request->file('avatar'));
+        $user->save();
+
+
+        // $user->update([
+        //     'avatar' => Storage::putFileAs('avatar', $request->file('avatar'))
+        // ]);
+        return response()->json([
+            'status' => true,
+            'message' =>'succes',
+            'user' =>$user
+        ]);
+    }
+
+    public function getAvatar($id){
+
+        $user = User::find($id);
+        return response()->file( Storage::disk('local')->path($user->avatar)); //PAKE YANG INI
+    }
+    public function getUserAvatar(){
+
+        $user = User::find(auth('user')->user()->id);
+        return response()->file( Storage::disk('local')->path($user->avatar)); //PAKE YANG INI
+        //return response()->json($user);
     }
 
     /**
@@ -105,7 +129,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $user = User::all();
+        return response()->json([
+            'status' => true,
+            'message' =>'Show all user',
+            'users' => $user
+        ]);
     }
 
     /**
@@ -148,9 +177,27 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $user = User::find(auth('user')->user()->id);
+        if($request->username){
+            $user->username = $request->username;
+        }
+        if($request->phone_number){
+            $user->phone_number = $request->phone_number;
+        }
+        if($request->file('avatar')){
+            if($user->avatar && Storage::exists($user->avatar)){
+                Storage::delete($user->avatar);
+            }
+            $user->avatar = Storage::putFile('avatar', $request->file('avatar'));
+        }
+        $user->save();
+        return response()->json([
+            'status' => true,
+            'message' =>'succes',
+            'user' =>$user
+        ]);
     }
 
     /**
@@ -161,6 +208,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'User has deleted'
+        ]);
     }
 }
