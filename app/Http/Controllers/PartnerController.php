@@ -67,6 +67,15 @@ class PartnerController extends Controller
             'partner' => $partner
         ]);
     }
+    public function getOpenPartner()
+    {
+        $partner = Partner::where('operational_status', 'where', 1)->with(['category'])->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Show All Data',
+            'partner' => $partner
+        ]);
+    }
 
     /**
      * Display the specified resource.
@@ -82,7 +91,7 @@ class PartnerController extends Controller
                 'status' => true,
                 'message' => 'Show All Data',
                 'partner' => $partner
-            ],400);
+            ]);
         }
         return response()->json([
             'status' => false,

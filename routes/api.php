@@ -36,6 +36,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'user' ], function ($router) {
     Route::get('avatar', [UserController::class, 'getUserAvatar']);
     
     Route::post('mitra', [PartnerController::class, 'store']);
+
+    Route::get('/partner',      [PartnerController::class, 'index']);
+    Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']);
+    Route::get('/partner/avatar/{id}', [PartnerController::class, 'getAvatar']);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
