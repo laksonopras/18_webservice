@@ -149,6 +149,6 @@ class TransactionController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'delete success',
-        ], 400);
+        ]);
     }
 }
