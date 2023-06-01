@@ -69,7 +69,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     // Route::post('refresh', 'AuthController@refresh');
     Route::get('/partner', [PartnerController::class, 'index']);
     Route::get('/partner/{id}', [PartnerController::class, 'showDetail']);
-    Route::patch('/partner', [PartnerController::class, 'update']);
+    Route::patch('/partner/{id}', [PartnerController::class, 'update']);
     Route::get('/partner/avatar/{id}', [PartnerController::class, 'getAvatar']);
 });
 
