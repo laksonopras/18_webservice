@@ -201,6 +201,33 @@ class PartnerController extends Controller
     public function updateForAdmin(Request $request, $id)
     {
         $partner = Partner::find($id);
+        if($request->partner_name){
+            $partner->partner_name = $request->partner_name;
+        }
+        if($request->email){
+            $partner->email = $request->email;
+        }
+        if($request->phone_number){
+            $partner->phone_number = $request->phone_number;
+        }
+        if($request->address){
+            $partner->address = $request->address;
+        }
+        if($request->coordinate){
+            $partner->coordinate = $request->coordinate;
+        }
+        if($request->file('avatar')){
+            if($partner->avatar && Storage::exists($partner->avatar)){
+                Storage::delete($partner->avatar);
+            }
+            $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
+        }
+        if($request->description){
+            $partner->description = $request->description;
+        }
+        if($request->operational_status){
+            $partner->operational_status = $request->operational_status;
+        }
         if($request->count_order){
             $partner->count_order = $request->count_order;
         }

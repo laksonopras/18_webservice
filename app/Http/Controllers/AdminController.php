@@ -142,6 +142,10 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Admin::destroy($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'admin has deleted'
+        ]);
     }
 }

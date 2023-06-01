@@ -27,66 +27,66 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     //Authentication
-    Route::post('register', [AdminController::class, 'register']); //verified
-    Route::post('login', [AdminController::class, 'login']); //verified
-    Route::post('logout', [AdminController::class, 'logout']); //verified
+    Route::post('register', [AdminController::class, 'register']); //Registrasi Admin
+    Route::post('login', [AdminController::class, 'login']); //Login Admin
+    Route::post('logout', [AdminController::class, 'logout']); //logout admin
 
     //My Profile
-    Route::get('me', [AdminController::class, 'getByToken']); //verified
-    Route::get('avatar', [GetPictController::class, 'getAdminbyToken']); //verified
-    Route::post('update', [AdminController::class, 'update']); //verified
+    Route::get('me', [AdminController::class, 'getByToken']);  //menampilkan informasi admin yang login
+    Route::get('avatar', [GetPictController::class, 'getAdminbyToken']); //menampilkan foto profil admin yang login
+    Route::post('update', [AdminController::class, 'update']); //memperbarui data admin yang login
 
     //Category
-    Route::get('category', [CategoryController::class, 'index']);
-    Route::get('category/{id}', [CategoryController::class, 'show']);
-    Route::post('category/', [CategoryController::class, 'store']);
-    Route::put('category/{id}', [CategoryController::class, 'update']);
-    Route::delete('category/{id}', [CategoryController::class, 'destroy']);
+    Route::get('category', [CategoryController::class, 'index']); //menampilkan semua kategori
+    Route::get('category/{id}', [CategoryController::class, 'show']); //menampilkan 1 kategori
+    Route::post('category/', [CategoryController::class, 'store']); //membuat kategori baru
+    Route::put('category/{id}', [CategoryController::class, 'update']); //memperbarui kategori yang sudah ada
+    Route::delete('category/{id}', [CategoryController::class, 'destroy']); //menghapus kategori
 
     //Banner
-    Route::get('banner', [BannerController::class, 'index']);
-    Route::get('banner/{id}', [GetPictController::class, 'getBanner']);
-    Route::post('banner/', [BannerController::class, 'store']);
-    Route::post('banner/{id}', [BannerController::class, 'update']);
-    Route::delete('banner/{id}', [BannerController::class, 'destroy']);
+    Route::get('banner', [BannerController::class, 'index']); // menampilkan semua banner
+    Route::get('banner/{id}', [GetPictController::class, 'getBanner']); //menampilkan 1 banner
+    Route::post('banner/', [BannerController::class, 'store']); //menambahkan 1 banner
+    Route::post('banner/{id}', [BannerController::class, 'update']); //memperbarui banner yang sudah ada
+    Route::delete('banner/{id}', [BannerController::class, 'destroy']); //menghapus banner
 
-    //Banner
-    Route::get('sq', [SquareFeedController::class, 'index']);
-    Route::get('sq/{id}', [GetPictController::class, 'getSquareFeed']);
-    Route::post('sq/', [SquareFeedController::class, 'store']);
-    Route::post('sq/{id}', [SquareFeedController::class, 'update']);
-    Route::delete('sq/{id}', [SquareFeedController::class, 'destroy']);
+    //Square Feed
+    Route::get('sq', [SquareFeedController::class, 'index']); // menampilkan semua sq
+    Route::get('sq/{id}', [GetPictController::class, 'getSquareFeed']); //menampilkan 1 sq
+    Route::post('sq/', [SquareFeedController::class, 'store']); //menambahkan 1 sq
+    Route::post('sq/{id}', [SquareFeedController::class, 'update']); //memperbarui sq yang sudah ada
+    Route::delete('sq/{id}', [SquareFeedController::class, 'destroy']); //menghapus banner
 
     //Customer
-    Route::get('user', [UserController::class, 'index']);
-    Route::get('user/avatar/{id}', [GetPictController::class, 'getUserbyId']);
-    Route::get('user/{id}', [UserController::class, 'getById']);
-    Route::delete('user/{id}', [UserController::class, 'destroy']);
+    Route::get('user', [UserController::class, 'index']); //menapmilkan semua customer
+    Route::get('user/avatar/{id}', [GetPictController::class, 'getUserbyId']); //menampilkan foto profil customer
+    Route::get('user/{id}', [UserController::class, 'getById']); //menampilkan 1 customer
+    Route::delete('user/{id}', [UserController::class, 'destroy']); //menghapus customer
 
     //partner
-    Route::get('/partner', [PartnerController::class, 'index']);
-    Route::get('/partner/{id}', [PartnerController::class, 'showDetail']);
+    Route::get('/partner', [PartnerController::class, 'index']); //menampilkan semua partner
+    Route::get('/partner/{id}', [PartnerController::class, 'showDetail']); //menampilkan 1 partner
 
-    Route::get('/partner/active', [PartnerController::class, 'getActivePartner']);
-    Route::get('/partner/unactive', [PartnerController::class, 'getUnactivePartner']);
-    Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']);
-    Route::put('/partner/{id}', [PartnerController::class, 'updateForAdmin']);
-    Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']);
+    Route::get('/partner/active', [PartnerController::class, 'getActivePartner']); //menampilkan partner yang sudah aktivasi
+    Route::get('/partner/unactive', [PartnerController::class, 'getUnactivePartner']); //menampilkan partner yang belum aktivasi
+    Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan partner yang sudah buka
+    Route::put('/partner/{id}', [PartnerController::class, 'updateForAdmin']); //memperbarui data partner
+    Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan foto profil partner
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     //authentication
-    Route::post('register', [UserController::class, 'register']);
-    Route::post('login', [UserController::class, 'login']);
-    Route::post('logout', [UserController::class, 'logout']);
+    Route::post('register', [UserController::class, 'register']); //Registrasi customer
+    Route::post('login', [UserController::class, 'login']); //Login customer
+    Route::post('logout', [UserController::class, 'logout']); //logout customer
 
     //My Profile
-    Route::get('me', [UserController::class, 'show']);
-    Route::get('avatar', [GetPictController::class, 'getUserbyToken']);
-    Route::post('update', [UserController::class, 'update']);
+    Route::get('me', [UserController::class, 'show']); //menampilkan profile customer yang sedang login
+    Route::get('avatar', [GetPictController::class, 'getUserbyToken']); //menampilkan gambar partner yang sedang login
+    Route::post('update', [UserController::class, 'update']); // memperbarui data aprtner yang sedang 
 
     //category
-    Route::get('category', [CategoryController::class, 'index']);
+    Route::get('category', [CategoryController::class, 'index']); //menampilkan semua kategori
 
     //partner
     Route::get('/partner/active', [PartnerController::class, 'getActivePartner']); //menampilkan daftar partner yang aktif
