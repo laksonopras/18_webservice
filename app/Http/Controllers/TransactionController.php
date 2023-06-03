@@ -8,6 +8,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
+
 
 class TransactionController extends Controller
 {
@@ -18,11 +20,17 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transaction = Transaction::all()->sortBy('creted_at');
+        $transactions = Transaction::orderBy('created_at')->get();
+
+        // Add date/time information to each transaction object
+        foreach ($transactions as $transaction) {
+            $transaction->date_time = $transaction->created_at->format('Y-m-d H:i:s');
+        }
+
         return response()->json([
             'status' => true,
-            'message' => 'Show all transaction',
-            'transaction' => $transaction
+            'message' => 'Show all transactions',
+            'transactions' => $transactions
         ]);
     }
 
@@ -44,26 +52,26 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $transaction = Transaction::create([
-                'id' => Str::random(12),
+                'id' => Uuid::uuid4()->toString(),
                 'quantity' => $request->quantity,
                 'sub_price' => 500000,
                 'price' => $request->quantity * 500000,
-                'partner_id' => $request->partner_id
+                'partner_id' => $request->partner_id,
+                'payment_proof' => $request->payment_proof,
             ]);
             return response()->json([
                 'status' => true,
                 'message' => 'input success',
                 'transaction' => $transaction
-            ]);   
-        } catch(Exception $e) {
+            ]);
+        } catch (Exception $e) {
             return response()->json([
-                'status' => true,
-                'message' => 'Tranasction is failed'
-            ]);   
+                'status' => false,
+                'message' => 'Transaction failed'
+            ]);
         }
-        
     }
 
     /**
@@ -95,7 +103,7 @@ class TransactionController extends Controller
             'status' => $request->status,
             'admin_id' => auth('admin')->user()->id
         ]);
-        if($transaction->status == 0){
+        if ($transaction->status == 0) {
             return response()->json([
                 'status' => false,
                 'message' => "Bukti tidak valid",
@@ -105,7 +113,7 @@ class TransactionController extends Controller
             $date_start = date('d-m-Y  H:i:s');
             $date_status = DateStatus::create([
                 'partner_id' => $transaction->partner_id,
-                'transaction_id' =>$transaction->id,
+                'transaction_id' => $transaction->id,
                 'date_start' => $date_start,
                 'date_end' => date('d-m-Y  H:i:s', strtotime($transaction->quantity, strtotime($date_start)))
             ]);
@@ -127,9 +135,18 @@ class TransactionController extends Controller
     public function update(Request $request, $id)
     {
         $transaction = Transaction::find($id);
-        $transaction->update([
-            'payment_proof' => $request->payment_proof,
-        ]);
+        if ($request->payment_proof) {
+            $transaction->payment_proof = $request->payment_proof;
+        }
+        if ($request->status || $request->status == 0) {
+            $transaction->status = $request->status;
+        }
+
+        $transaction->save();
+
+        // $transaction->update([
+        //     'payment_proof' => $request->payment_proof,
+        // ]);
         return response()->json([
             'status' => true,
             'message' => 'transaction has updated',
