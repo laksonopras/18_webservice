@@ -203,46 +203,57 @@ class PartnerController extends Controller
     public function updateForAdmin(Request $request, $id)
     {
         $partner = Partner::find($id);
-        if ($request->partner_name) {
-            $partner->partner_name = $request->partner_name;
-        }
-        if ($request->email) {
-            $partner->email = $request->email;
-        }
-        if ($request->phone_number) {
-            $partner->phone_number = $request->phone_number;
-        }
-        if ($request->address) {
-            $partner->address = $request->address;
-        }
-        if ($request->coordinate) {
-            $partner->coordinate = $request->coordinate;
-        }
-        if ($request->file('avatar')) {
-            if ($partner->avatar && Storage::exists($partner->avatar)) {
-                Storage::delete($partner->avatar);
-            }
-            $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
-        }
-        if ($request->description) {
-            $partner->description = $request->description;
-        }
-        if ($request->operational_status) {
-            $partner->operational_status = $request->operational_status;
-        }
-        if ($request->count_order) {
-            $partner->count_order = $request->count_order;
-        }
-        if ($request->account_status || $request->account_status == 0) {
-            $partner->account_status = $request->account_status;
-        }
-        if ($request->request_status) {
-            if ($request->request_status == 0) {
-                $user = User::find(auth('user')->user()->id);
-                $user->update(['role' => 0]);
-            }
-            $partner->request_status = $request->request_status;
-        }
+
+        $partner->partner_name = $request->input('partner_name');
+        $partner->email = $request->input('email');
+        $partner->coordinate = $request->input('coordinate');
+        $partner->count_order = $request->input('count_order');
+        $partner->account_status = $request->input('account_status');
+        $partner->operational_status = $request->input('operational_status');
+        $partner->address = $request->input('address');
+        $partner->phone_number = $request->input('phone_number');
+        $partner->description = $request->input('description');
+        $partner->save();
+        // if ($request->partner_name) {
+        //     $partner->partner_name = $request->partner_name;
+        // }
+        // if ($request->email) {
+        //     $partner->email = $request->email;
+        // }
+        // if ($request->phone_number) {
+        //     $partner->phone_number = $request->phone_number;
+        // }
+        // if ($request->address) {
+        //     $partner->address = $request->address;
+        // }
+        // if ($request->coordinate) {
+        //     $partner->coordinate = $request->coordinate;
+        // }
+        // if ($request->file('avatar')) {
+        //     if ($partner->avatar && Storage::exists($partner->avatar)) {
+        //         Storage::delete($partner->avatar);
+        //     }
+        //     $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
+        // }
+        // if ($request->description) {
+        //     $partner->description = $request->description;
+        // }
+        // if ($request->operational_status) {
+        //     $partner->operational_status = $request->operational_status;
+        // }
+        // if ($request->count_order) {
+        //     $partner->count_order = $request->count_order;
+        // }
+        // if ($request->account_status || $request->account_status == 0) {
+        //     $partner->account_status = $request->account_status;
+        // }
+        // if ($request->request_status) {
+        //     if ($request->request_status == 0) {
+        //         $user = User::find(auth('user')->user()->id);
+        //         $user->update(['role' => 0]);
+        //     }
+        //     $partner->request_status = $request->request_status;
+        // }
         $partner->save();
         return response()->json([
             'status' => true,
@@ -257,6 +268,18 @@ class PartnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function confirmation(Request $request, $id)
+    {
+        $partner = Partner::find($id);
+        $partner->account_status = $request->input('account_status');
+        $partner->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'succes',
+            'partner' => $partner
+        ]);
+    }
     public function destroy($id)
     {
         Partner::destroy($id);
