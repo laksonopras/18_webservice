@@ -38,13 +38,12 @@ class CallController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $call = Call::create([
-            'user_id' => $request->auth('user')->user()->id,
-            'partner_id' => $request->partner_id,
+            'user_id' => auth('user')->user()->id,
+            'partner_id' => $id,
             'user_coordinate' => 0,
-            'order_status' => $request->order_status,
             'message' => $request->message
 
         ]);
@@ -79,7 +78,7 @@ class CallController extends Controller
      */
     public function historyUser()
     {
-        $call = Call::where('user_id', auth('user')->user()->id);
+        $call = Call::where('user_id', auth('user')->user()->id)->with(['partner'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all data',

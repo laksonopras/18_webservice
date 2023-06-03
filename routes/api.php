@@ -81,7 +81,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     Route::post('logout', [UserController::class, 'logout']); //logout customer
 
     //My Profile
-    Route::get('me', [UserController::class, 'show']); //menampilkan profile customer yang sedang login
+    Route::get('me', [UserController::class, 'getByToken']); //menampilkan profile customer yang sedang login
     Route::get('avatar', [GetPictController::class, 'getUserbyToken']); //menampilkan gambar partner yang sedang login
     Route::post('update', [UserController::class, 'update']); // memperbarui data aprtner yang sedang 
 
@@ -93,11 +93,13 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan daftar partner yang buka
     Route::put('/partner',      [PartnerController::class, 'updateForUser']); //memperbarui informasi partner
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
-    Route::get('/partner/you', [GetPictController::class, 'show']); //menampilkan mitranya sendiri
+    Route::get('/partner/you', [PartnerController::class, 'show']); //menampilkan mitranya sendiri
+    Route::post('/partner', [PartnerController::class, 'store']); //menampilkan mitranya sendiri
+
 
     //call
-    Route::post('/call', [CallController::class, 'store']); //membuat panggilan
+    Route::post('/call/{id}', [CallController::class, 'store']); //membuat panggilan
     Route::get('/call', [CallController::class, 'historyUser']); //Histori panggilan pengguna
-    Route::get('/call/{id}', [CallController::class, 'historyUser']); //histori panggilan partner
+    Route::get('/call/{id}', [CallController::class, 'historyPartner']); //histori panggilan partner
     Route::put('/call/{id}', [CallController::class, 'update']); //histori panggilan partner
 });

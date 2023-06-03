@@ -41,7 +41,7 @@ class UserController extends Controller
         if($validate->fails()){
             return response()->json([
                 'status' => false,
-                'message' => $validate->messages()
+                'message' => $validate->messages()->first()
             ]);
         } else {
             $user = User::create([
@@ -68,7 +68,7 @@ class UserController extends Controller
         if (!$token = Auth::guard('user')->attempt($credentials)) {
             return response()->json([
                 'status' => false,
-                'message' => 'Unauthorized'
+                'message' => 'email and password is invalid'
             ]);
         }
         $user = User::where('email', $request->email)->first();

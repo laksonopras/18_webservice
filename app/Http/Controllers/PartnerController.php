@@ -44,7 +44,7 @@ class PartnerController extends Controller
                 'description' => $request->description,
                 'category_id' => $request->category_id,
                 'coordinate' => 0,
-                'partner_id' => auth('user')->user()->id
+                'user_id' => auth('user')->user()->id
             ]);
             $user = User::find(auth('user')->user()->id);
             $user->update(['role' => 1]);
@@ -106,7 +106,7 @@ class PartnerController extends Controller
      */
     public function show()
     {
-        $partner = Partner::where('user_id', auth('user')->user()->id)->with(['category', 'admin'])->get();
+        $partner = Partner::where('user_id', auth('user')->user()->id)->with(['category', 'admin'])->get()->first();
         if ($partner) {
             return response()->json([
                 'status' => true,
