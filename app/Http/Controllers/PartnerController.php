@@ -233,7 +233,7 @@ class PartnerController extends Controller
         if ($request->count_order) {
             $partner->count_order = $request->count_order;
         }
-        if ($request->account_status) {
+        if ($request->account_status || $request->account_status == 0) {
             $partner->account_status = $request->account_status;
         }
         if ($request->request_status) {
