@@ -8,6 +8,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\GetPictController;
 use App\Http\Controllers\SquareFeedController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     Route::get('user/avatar/{id}', [GetPictController::class, 'getUserbyId']); //menampilkan foto profil customer
     Route::get('user/{id}', [UserController::class, 'getById']); //menampilkan 1 customer
     Route::delete('user/{id}', [UserController::class, 'destroy']); //menghapus customer
+
+    //partner
+    Route::get('/transaction', [TransactionController::class, 'index']); //menampilkan semua transaksi
+    Route::put('/transaction/{id}', [TransactionController::class, 'update']); //update semua transaksi
 
     //partner
     Route::get('/partner', [PartnerController::class, 'index']); //menampilkan semua partner
