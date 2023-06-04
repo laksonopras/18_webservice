@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $category = Category::all();
+        $category = Category::with('admin')->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all category',
@@ -43,7 +43,7 @@ class CategoryController extends Controller
     {
         $category = Category::create([
             'category_name' => $request->category_name,
-            'admin_id' => auth('admin')->user()->id
+            'admin_id' => auth('admin')->user()->id // gagal mendapatkan auth id
         ]);
 
         return response()->json([
@@ -99,7 +99,6 @@ class CategoryController extends Controller
             'message' => 'Category has updated',
             'categories' => $category
         ]);
-        
     }
 
     /**
