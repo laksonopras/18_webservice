@@ -92,7 +92,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->update([
             'category_name' => $request->category_name,
-            'admin_id' => auth('admin')->user()->id
+            // 'admin_id' => auth('admin')->user()->id
         ]);
         return response()->json([
             'status' => true,
