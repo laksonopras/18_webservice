@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             PartnerSeeder::class,
             TransactionSeeder::class,
+            BannerSeeder::class,
+            SquareFeedSeeder::class,
         ]);
     }
 }
