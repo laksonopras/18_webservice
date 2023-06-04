@@ -17,7 +17,7 @@ class BannerController extends Controller
      */
     public function index()
     {
-        $banner = Banner::all();
+        $banner = Banner::with('admin')->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all banner',
@@ -48,7 +48,7 @@ class BannerController extends Controller
         );
 
         $validate = Validator::make($request->all(), $rules);
-        if($validate->fails()){
+        if ($validate->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => $validate->messages()->first()
@@ -74,7 +74,6 @@ class BannerController extends Controller
      */
     public function show($id)
     {
-        
     }
 
     /**
@@ -102,14 +101,14 @@ class BannerController extends Controller
         );
 
         $validate = Validator::make($request->all(), $rules);
-        if($validate->fails()){
+        if ($validate->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => $validate->messages()->first()
             ]);
         } else {
             $banner = Banner::find($id);
-            if($banner->img_path && Storage::exists($banner->img_path)){
+            if ($banner->img_path && Storage::exists($banner->img_path)) {
                 Storage::delete($banner->img_path);
             }
             $banner->img_path = Storage::putFile('banner', $request->file('image'));
@@ -118,9 +117,7 @@ class BannerController extends Controller
                 'status' => true,
                 'message' => 'Banner has updated'
             ]);
-
         }
-
     }
 
     /**

@@ -17,7 +17,7 @@ class SquareFeedController extends Controller
      */
     public function index()
     {
-        $squarefeed = squarefeed::all();
+        $squarefeed = squarefeed::with('admin')->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all squarefeed',
@@ -48,7 +48,7 @@ class SquareFeedController extends Controller
         );
 
         $validate = Validator::make($request->all(), $rules);
-        if($validate->fails()){
+        if ($validate->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => $validate->messages()->first()
@@ -102,14 +102,14 @@ class SquareFeedController extends Controller
         );
 
         $validate = Validator::make($request->all(), $rules);
-        if($validate->fails()){
+        if ($validate->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => $validate->messages()->first()
             ]);
         } else {
             $squarefeed = SquareFeed::find($id);
-            if($squarefeed->img_path && Storage::exists($squarefeed->img_path)){
+            if ($squarefeed->img_path && Storage::exists($squarefeed->img_path)) {
                 Storage::delete($squarefeed->img_path);
             }
             $squarefeed->img_path = Storage::putFile('squarefeed', $request->file('image'));
@@ -118,9 +118,7 @@ class SquareFeedController extends Controller
                 'status' => true,
                 'message' => 'squarefeed has updated'
             ]);
-
         }
-
     }
 
     /**
@@ -129,10 +127,10 @@ class SquareFeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) 
+    public function destroy($id)
     {
         $squarefeed = SquareFeed::find($id);
-        $delete = Storage::delete($squarefeed->img_path);
+        // $delete = Storage::delete($squarefeed->img_path);
         $squarefeed->delete();
         return response()->json([
             'status' => true,
