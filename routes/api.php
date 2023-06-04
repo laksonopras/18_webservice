@@ -62,6 +62,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     Route::get('user', [UserController::class, 'index']); //menapmilkan semua customer
     Route::get('user/avatar/{id}', [GetPictController::class, 'getUserbyId']); //menampilkan foto profil customer
     Route::get('user/{id}', [UserController::class, 'getById']); //menampilkan 1 customer
+    Route::put('user/{id}', [UserController::class, 'updateForAdmin']); //menampilkan 1 customer
     Route::delete('user/{id}', [UserController::class, 'destroy']); //menghapus customer
 
     //partner
