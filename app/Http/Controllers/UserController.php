@@ -204,7 +204,12 @@ class UserController extends Controller
         $user->email = $request->input('email');
         $user->status = $request->input('status');
         $user->role = $request->input('role');
-        // $user->avatar = $request->input('avatar');
+        if ($request->file('avatar')) {
+            if ($user->avatar && Storage::exists($user->avatar)) {
+                Storage::delete($user->avatar);
+            }
+            $user->avatar = Storage::putFile('user', $request->file('avatar'));
+        }
         $user->save();
         return response()->json([
             'status' => true,
