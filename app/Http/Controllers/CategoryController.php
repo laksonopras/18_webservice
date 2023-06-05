@@ -66,7 +66,7 @@ class CategoryController extends Controller
             'status' => true,
             'message' => 'Show category',
             'categories' => $category
-        ], 400);
+        ]);
     }
 
     /**

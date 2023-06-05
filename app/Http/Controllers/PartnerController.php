@@ -39,7 +39,7 @@ class PartnerController extends Controller
                 'partner_name' => $request->partner_name,
                 'email' => $request->email,
                 'address' => $request->address,
-                'avatar' => Storage::putFile('avatar_partner', $request->file('avatar')),
+                'avatar' => Storage::putFile('partner', $request->file('avatar')),
                 'phone_number' => $request->phone_number,
                 'description' => $request->description,
                 'category_id' => $request->category_id,
@@ -161,8 +161,8 @@ class PartnerController extends Controller
 
     public function updateForUser(Request $request)
     {
-        $partner = Partner::find(auth('user')->user()->id);
-        if ($request->partner_name) {
+        $partner = Partner::where('user_id', auth('user')->user()->id)->get()->first();
+        if ($request->partner_name != null) {
             $partner->partner_name = $request->partner_name;
         }
         if ($request->email) {
@@ -204,56 +204,56 @@ class PartnerController extends Controller
     {
         $partner = Partner::find($id);
 
-        $partner->partner_name = $request->input('partner_name');
-        $partner->email = $request->input('email');
-        $partner->coordinate = $request->input('coordinate');
-        $partner->count_order = $request->input('count_order');
-        $partner->account_status = $request->input('account_status');
-        $partner->operational_status = $request->input('operational_status');
-        $partner->address = $request->input('address');
-        $partner->phone_number = $request->input('phone_number');
-        $partner->description = $request->input('description');
-        $partner->save();
-        // if ($request->partner_name) {
-        //     $partner->partner_name = $request->partner_name;
-        // }
-        // if ($request->email) {
-        //     $partner->email = $request->email;
-        // }
-        // if ($request->phone_number) {
-        //     $partner->phone_number = $request->phone_number;
-        // }
-        // if ($request->address) {
-        //     $partner->address = $request->address;
-        // }
-        // if ($request->coordinate) {
-        //     $partner->coordinate = $request->coordinate;
-        // }
-        // if ($request->file('avatar')) {
-        //     if ($partner->avatar && Storage::exists($partner->avatar)) {
-        //         Storage::delete($partner->avatar);
-        //     }
-        //     $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
-        // }
-        // if ($request->description) {
-        //     $partner->description = $request->description;
-        // }
-        // if ($request->operational_status) {
-        //     $partner->operational_status = $request->operational_status;
-        // }
-        // if ($request->count_order) {
-        //     $partner->count_order = $request->count_order;
-        // }
-        // if ($request->account_status || $request->account_status == 0) {
-        //     $partner->account_status = $request->account_status;
-        // }
-        // if ($request->request_status) {
-        //     if ($request->request_status == 0) {
-        //         $user = User::find(auth('user')->user()->id);
-        //         $user->update(['role' => 0]);
-        //     }
-        //     $partner->request_status = $request->request_status;
-        // }
+        // $partner->partner_name = $request->input('partner_name');
+        // $partner->email = $request->input('email');
+        // $partner->coordinate = $request->input('coordinate');
+        // $partner->count_order = $request->input('count_order');
+        // $partner->account_status = $request->input('account_status');
+        // $partner->operational_status = $request->input('operational_status');
+        // $partner->address = $request->input('address');
+        // $partner->phone_number = $request->input('phone_number');
+        // $partner->description = $request->input('description');
+        // $partner->save();
+        if ($request->partner_name) {
+            $partner->partner_name = $request->partner_name;
+        }
+        if ($request->email) {
+            $partner->email = $request->email;
+        }
+        if ($request->phone_number) {
+            $partner->phone_number = $request->phone_number;
+        }
+        if ($request->address) {
+            $partner->address = $request->address;
+        }
+        if ($request->coordinate) {
+            $partner->coordinate = $request->coordinate;
+        }
+        if ($request->file('avatar')) {
+            if ($partner->avatar && Storage::exists($partner->avatar)) {
+                Storage::delete($partner->avatar);
+            }
+            $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
+        }
+        if ($request->description) {
+            $partner->description = $request->description;
+        }
+        if ($request->operational_status) {
+            $partner->operational_status = $request->operational_status;
+        }
+        if ($request->count_order) {
+            $partner->count_order = $request->count_order;
+        }
+        if ($request->account_status) {
+            $partner->account_status = $request->account_status;
+        }
+        if ($request->request_status) {
+            if ($request->request_status == 0) {
+                $user = User::find(auth('user')->user()->id);
+                $user->update(['role' => 0]);
+            }
+            $partner->request_status = $request->request_status;
+        }
         $partner->save();
         return response()->json([
             'status' => true,

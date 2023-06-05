@@ -72,11 +72,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
     //partner
     Route::get('/partner', [PartnerController::class, 'index']); //menampilkan semua partner
     Route::get('/partner/{id}', [PartnerController::class, 'showDetail']); //menampilkan 1 partner
-
     Route::get('/partner/active', [PartnerController::class, 'getActivePartner']); //menampilkan partner yang sudah aktivasi
     Route::get('/partner/unactive', [PartnerController::class, 'getUnactivePartner']); //menampilkan partner yang belum aktivasi
     Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan partner yang sudah buka
-    Route::put('/partner/{id}', [PartnerController::class, 'updateForAdmin']); //memperbarui data partner
+    Route::post('/partner/update/{id}', [PartnerController::class, 'updateForAdmin']); //memperbarui data partner
     Route::put('/partner/{id}/confirmation', [PartnerController::class, 'confirmation']); //shortcut confirmasi data partner
     Route::post('/partner/{id}', [PartnerController::class, 'destroy']); //menghapus data partner
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan foto profil partner
@@ -99,7 +98,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     //partner
     Route::get('/partner/active', [PartnerController::class, 'getActivePartner']); //menampilkan daftar partner yang aktif
     Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan daftar partner yang buka
-    Route::put('/partner',      [PartnerController::class, 'updateForUser']); //memperbarui informasi partner
+    Route::post('/partner/update',      [PartnerController::class, 'updateForUser']); //memperbarui informasi partner
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
     Route::get('/partner/you', [PartnerController::class, 'show']); //menampilkan mitranya sendiri
     Route::post('/partner', [PartnerController::class, 'store']); //menampilkan mitranya sendiri
@@ -109,5 +108,5 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     Route::post('/call/{id}', [CallController::class, 'store']); //membuat panggilan
     Route::get('/call', [CallController::class, 'historyUser']); //Histori panggilan pengguna
     Route::get('/call/partner', [CallController::class, 'historyPartner']); //histori panggilan partner
-    Route::put('/call/{id}', [CallController::class, 'update']); //histori panggilan partner
+    Route::post('/call/update/{id}', [CallController::class, 'update']); //histori panggilan partner
 });

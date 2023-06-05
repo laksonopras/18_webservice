@@ -100,7 +100,7 @@ class UserController extends Controller
         if ($user->avatar && Storage::exists($user->avatar)) {
             Storage::delete($user->avatar);
         }
-        $user->avatar = Storage::putFile('avatar', $request->file('avatar'));
+        $user->avatar = Storage::putFile('user', $request->file('avatar'));
         $user->save();
 
 
@@ -186,7 +186,7 @@ class UserController extends Controller
             if ($user->avatar && Storage::exists($user->avatar)) {
                 Storage::delete($user->avatar);
             }
-            $user->avatar = Storage::putFile('avatar', $request->file('avatar'));
+            $user->avatar = Storage::putFile('user', $request->file('avatar'));
         }
         $user->save();
         return response()->json([
