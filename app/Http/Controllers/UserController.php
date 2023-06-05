@@ -19,7 +19,8 @@ class UserController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function _construct(){
+    public function _construct()
+    {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
@@ -38,7 +39,7 @@ class UserController extends Controller
         );
 
         $validate = Validator::make($request->all(), $rules);
-        if($validate->fails()){
+        if ($validate->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => $validate->messages()->first()
@@ -62,7 +63,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $credentials = request(['email', 'password']);
 
         if (!$token = Auth::guard('user')->attempt($credentials)) {
@@ -72,14 +74,14 @@ class UserController extends Controller
             ]);
         }
         $user = User::where('email', $request->email)->first();
-        $user->remember_token = $token; 
-        $user->save();      
+        $user->remember_token = $token;
+        $user->save();
         return response()->json([
             'status' => true,
             'message' => 'successfully login',
             'token' => $user->remember_token,
             'user' => $user
-        ],200);
+        ], 200);
     }
 
     public function logout()
@@ -89,12 +91,13 @@ class UserController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Successfully logged out'
-        ],200);
+        ], 200);
     }
 
-    public function setAvatar(Request $request){
+    public function setAvatar(Request $request)
+    {
         $user = User::find(auth('user')->user()->id);
-        if($user->avatar && Storage::exists($user->avatar)){
+        if ($user->avatar && Storage::exists($user->avatar)) {
             Storage::delete($user->avatar);
         }
         $user->avatar = Storage::putFile('avatar', $request->file('avatar'));
@@ -106,8 +109,8 @@ class UserController extends Controller
         // ]);
         return response()->json([
             'status' => true,
-            'message' =>'succes',
-            'user' =>$user
+            'message' => 'succes',
+            'user' => $user
         ]);
     }
 
@@ -121,7 +124,7 @@ class UserController extends Controller
         $user = User::all();
         return response()->json([
             'status' => true,
-            'message' =>'Show all user',
+            'message' => 'Show all user',
             'users' => $user
         ]);
     }
@@ -173,14 +176,14 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = User::find(auth('user')->user()->id);
-        if($request->username){
+        if ($request->username) {
             $user->username = $request->username;
         }
-        if($request->phone_number){
+        if ($request->phone_number) {
             $user->phone_number = $request->phone_number;
         }
-        if($request->file('avatar')){
-            if($user->avatar && Storage::exists($user->avatar)){
+        if ($request->file('avatar')) {
+            if ($user->avatar && Storage::exists($user->avatar)) {
                 Storage::delete($user->avatar);
             }
             $user->avatar = Storage::putFile('avatar', $request->file('avatar'));
@@ -188,8 +191,25 @@ class UserController extends Controller
         $user->save();
         return response()->json([
             'status' => true,
-            'message' =>'succes',
-            'user' =>$user
+            'message' => 'succes',
+            'user' => $user
+        ]);
+    }
+
+    public function updateForAdmin(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->status = $request->input('status');
+        $user->role = $request->input('role');
+        // $user->avatar = $request->input('avatar');
+        $user->save();
+        return response()->json([
+            'status' => true,
+            'message' => 'succes',
+            'user' => $user
         ]);
     }
 

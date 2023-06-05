@@ -33,5 +33,8 @@ class Partner extends Model
     {
         return $this->belongsTo(Admin::class);
     }
-    
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
