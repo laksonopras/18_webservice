@@ -106,12 +106,8 @@ class AdminController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
-            'admin' => [
-                'id' => $admin->id,
-                'username' => $admin->username,
-                'email' => $admin->email,
-                'password' => $admin->password,
-            ]
+            'admin' => $admin
+            
         ]);
     }
 
