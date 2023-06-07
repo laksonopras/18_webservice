@@ -85,9 +85,9 @@ class CallController extends Controller
             'call' => $call
         ]);
     }
-    public function historPartner($id)
+    public function historyPartner($id)
     {
-        $call = Call::where('partner_id', $id);
+        $call = Call::where('partner_id', $id)->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
