@@ -107,6 +107,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     //call
     Route::post('/call/{id}', [CallController::class, 'store']); //membuat panggilan
     Route::get('/call', [CallController::class, 'historyUser']); //Histori panggilan pengguna
-    Route::get('/call/partner{id}', [CallController::class, 'historyPartner']); //histori panggilan partner
+    Route::get('/call/partner/{id}', [CallController::class, 'historyPartner']); //histori panggilan partner
     Route::post('/call/update/{id}', [CallController::class, 'update']); //histori panggilan partner
 });
