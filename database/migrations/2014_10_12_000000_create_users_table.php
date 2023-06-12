@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->integer('status')->default(1);
             $table->integer('role')->default(0);
+            $table->integer('ordering')->default(0);
             $table->text('remember_token')->nullable()->unique();
             $table->timestamps();
         });
