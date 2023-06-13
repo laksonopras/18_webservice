@@ -82,13 +82,23 @@ class CallController extends Controller
      */
     public function historyUser()
     {
-        $call = Call::where('user_id', auth('user')->user()->id)->with(['partner', 'progres'])->get();
+        $call = Call::where('user_id', auth('user')->user()->id)->where('order_status', '>=', 6 )->with(['partner', 'progres'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
             'call' => $call
         ]);
     }
+
+    public function processing(){
+        $call = Call::where('user_id', auth('user')->user()->id)->where('order_status', '<', 6 )->with(['partner', 'progres'])->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all data',
+            'call' => $call
+        ]);
+    }
+
     public function historyPartner($id)
     {
         $call = Call::where('partner_id', $id)->with(['user', 'progres'])->get();
