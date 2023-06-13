@@ -126,6 +126,7 @@ class CallController extends Controller
         if($request->order_status >= 6){
             $user = User::find(auth('user')->user()->id);
             $user->ordering = 0;
+            $user->save();
         }
         return response()->json([
             'status' => true,
