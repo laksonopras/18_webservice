@@ -16,5 +16,6 @@ class Call extends Model
     public function user(){ return $this->belongsTo(User::class); }
 
     public function partner(){ return $this->belongsTo(Partner::class); }
-
+    
+    public function progres(){ return $this->belongsTo(Kemajuan::class, 'order_status'); }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('partner_id')->references('id')->on('partners')->onDelete('cascade');
             $table->float('user_coordinate');
-            $table->integer('order_status')->default(0);
+            $table->foreignId('order_status')->references('id')->on('kemajuans')->onDelete('cascade');
             $table->string('message');
             $table->timestamps();
         });

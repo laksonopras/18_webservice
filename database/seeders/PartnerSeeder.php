@@ -34,6 +34,7 @@ class PartnerSeeder extends Seeder
                 'count_order' => rand(1, 1000),
                 'account_status' => rand(0, 1),
                 'operational_status' => rand(0, 1),
+                'request_status' => 1,
                 'category_id' => Category::inRandomOrder()->first()->id,
                 'user_id' => User::inRandomOrder()->first()->id,
             ]);

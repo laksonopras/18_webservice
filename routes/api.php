@@ -7,6 +7,7 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\GetPictController;
+use App\Http\Controllers\ProgresController;
 use App\Http\Controllers\SquareFeedController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -96,7 +97,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         
         //My Profile
         Route::get('me', [UserController::class, 'getByToken']); //menampilkan profile customer yang sedang login
-        Route::get('avatar', [GetPictController::class, 'getUserbyToken']); //menampilkan gambar partner yang sedang login
         Route::post('update', [UserController::class, 'update']); // memperbarui data aprtner yang sedang 
         
         //category
@@ -106,7 +106,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         Route::get('/partner/active', [PartnerController::class, 'getActivePartner']); //menampilkan daftar partner yang aktif
         Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan daftar partner yang buka
         Route::post('/partner/update',      [PartnerController::class, 'updateForUser']); //memperbarui informasi partner
-        Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
         Route::get('/partner/you', [PartnerController::class, 'show']); //menampilkan mitranya sendiri
         Route::post('/partner', [PartnerController::class, 'store']); //menampilkan mitranya sendiri
         
@@ -115,6 +114,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         Route::get('/call', [CallController::class, 'historyUser']); //Histori panggilan pengguna
         Route::get('/call/partner/{id}', [CallController::class, 'historyPartner']); //histori panggilan partner
         Route::post('/call/update/{id}', [CallController::class, 'update']); //histori panggilan partner
+        
+        Route::get('progres', [ProgresController::class, 'index']); //Registrasi customer
     });
+    Route::get('avatar', [GetPictController::class, 'getUserbyToken']); //menampilkan gambar partner yang sedang login
+    Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
 });
-    

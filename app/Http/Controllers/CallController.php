@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Call;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CallController extends Controller
@@ -44,9 +45,12 @@ class CallController extends Controller
             'user_id' => auth('user')->user()->id,
             'partner_id' => $id,
             'user_coordinate' => 0,
-            'message' => $request->message
-
+            'message' => $request->message,
+            'order_status' => 1
         ]);
+        $user = User::find($call->user_id);
+        $user->ordering = $call->id;
+        $user->save();
         return response()->json([
             'status' => true,
             'message' => 'your call is being processed',
@@ -62,7 +66,7 @@ class CallController extends Controller
      */
     public function show($id)
     {
-        $call = Call::find($id);
+        $call = Call::find($id)->with(['progres']);
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
@@ -78,7 +82,7 @@ class CallController extends Controller
      */
     public function historyUser()
     {
-        $call = Call::where('user_id', auth('user')->user()->id)->with(['partner'])->get();
+        $call = Call::where('user_id', auth('user')->user()->id)->with(['partner', 'progres'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
@@ -87,7 +91,7 @@ class CallController extends Controller
     }
     public function historyPartner($id)
     {
-        $call = Call::where('partner_id', $id)->with('user')->get();
+        $call = Call::where('partner_id', $id)->with(['user', 'progres'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
@@ -108,6 +112,11 @@ class CallController extends Controller
         $call->update([
             'order_status' => $request->order_status,
         ]);
+
+        if($request->order_status >= 6){
+            $user = User::find(auth('user')->user()->id);
+            $user->ordering = 0;
+        }
         return response()->json([
             'status' => true,
             'message' => 'progress has been continued',
