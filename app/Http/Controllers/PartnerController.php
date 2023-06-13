@@ -189,7 +189,7 @@ class PartnerController extends Controller
         if ($request->description) {
             $partner->description = $request->description;
         }
-        if ($request->operational_status) {
+        if ($request->operational_status || $request->operational_status == 0) {
             $partner->operational_status = $request->operational_status;
         }
         $partner->save();
