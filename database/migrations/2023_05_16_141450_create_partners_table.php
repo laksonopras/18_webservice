@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('address');
             $table->string('avatar')->nullable();
-            $table->float('coordinate');
+            $table->float('latitude');
+            $table->float('longitude');
             $table->string('description');
             $table->integer('count_order')->default(0);
             $table->integer('account_status')->default(0);     // Status 0 karena belum aktivasi akun (belum bayar) 
