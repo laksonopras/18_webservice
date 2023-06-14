@@ -19,13 +19,14 @@ class PartnerSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create('id_ID');
+        $partnerName = ['Netral', 'Mitsubishi Motor', 'Toyota AUTO 2000', 'Honda Motor', 'Berkah Abadi'];
 
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 0; $i < count($partnerName); $i++) {
             $latitude = rand(-90, 90); // Generate a random latitude between -90 and 90
             $longitude = rand(-180, 180); // Generate a random longitude between -180 and 180
 
             Partner::create([
-                'partner_name' => $faker->name,
+                'partner_name' => $partnerName[$i],
                 'email' => $faker->email,
                 'phone_number' => $faker->phoneNumber,
                 'address' => $faker->address,
