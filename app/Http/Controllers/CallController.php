@@ -123,8 +123,8 @@ class CallController extends Controller
             'order_status' => $request->order_status,
         ]);
 
-        if($request->order_status >= 6){
-            $user = User::find(auth('user')->user()->id);
+        if($call->order_status >= 6){
+            $user = User::find($call->user_id);
             $user->ordering = 0;
             $user->save();
         }
