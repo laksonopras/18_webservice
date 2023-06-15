@@ -43,8 +43,8 @@ class PartnerController extends Controller
                 'phone_number' => $request->phone_number,
                 'description' => $request->description,
                 'category_id' => $request->category_id,
-                'latitude' => 0,
-                'longitude' => 0,
+                'link_google_map' => $request->link_google_map,
+                'village_id' => $request->village_id,
                 'user_id' => auth('user')->user()->id
             ]);
             $user = User::find(auth('user')->user()->id);
@@ -64,7 +64,7 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        $partner = Partner::with(['category', 'admin'])->get();
+        $partner = Partner::with(['category', 'admin', 'village'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
@@ -82,7 +82,7 @@ class PartnerController extends Controller
     }
     public function getActivePartner()
     {
-        $partner = Partner::where('account_status', 1)->with(['category'])->get();
+        $partner = Partner::where('account_status', 1)->with(['category', 'village'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
@@ -181,11 +181,11 @@ class PartnerController extends Controller
             }
             $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
         }
-        if ($request->latitude) {
-            $partner->latitude = $request->latitude;
+        if ($request->village_id) {
+            $partner->village_id = $request->village_id;
         }
-        if ($request->longitude) {
-            $partner->longitude = $request->longitude;
+        if ($request->link_google_map) {
+            $partner->link_google_map = $request->link_google_map;
         }
         if ($request->description) {
             $partner->description = $request->description;
@@ -227,11 +227,11 @@ class PartnerController extends Controller
         if ($request->address) {
             $partner->address = $request->address;
         }
-        if ($request->latitude) {
-            $partner->latitude = $request->latitude;
+        if ($request->village_id) {
+            $partner->village_id = $request->village_id;
         }
-        if ($request->longitude) {
-            $partner->longitude = $request->longitude;
+        if ($request->link_google_map) {
+            $partner->link_google_map = $request->link_google_map;
         }
         if ($request->file('avatar')) {
             if ($partner->avatar && Storage::exists($partner->avatar)) {

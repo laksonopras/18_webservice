@@ -14,7 +14,6 @@ class Partner extends Model
         'address',
         'avatar',
         'phone_number',
-        'coordinate',
         'description',
         'count_order',
         'account_status',
@@ -22,7 +21,9 @@ class Partner extends Model
         'category_id',
         'admin_id',
         'user_id',
-        'token'
+        'link_google_map',
+        'village_id'
+
     ];
 
     public function category()
@@ -36,5 +37,9 @@ class Partner extends Model
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+    public function village()
+    {
+        return $this->belongsTo(Village::class, 'village_id');
     }
 }

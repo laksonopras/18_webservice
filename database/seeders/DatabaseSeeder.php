@@ -25,16 +25,17 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
+            ProvinceSeeder::class,
+            CitySeeder::class,
+            DistrictSeeder::class,
+            PostalCodeSeeder::class,
+            VillageSeeder::class,
             PartnerSeeder::class,
             TransactionSeeder::class,
             BannerSeeder::class,
             SquareFeedSeeder::class,
             KemajuanSeeder::class,
-            ProvinceSeeder::class,
-            CitySeeder::class,
-            DistrictSeeder::class,
-            PostalCodeSeeder::class,
-            VillageSeeder::class
+            
         ]);
     }
 }

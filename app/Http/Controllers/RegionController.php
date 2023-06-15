@@ -32,7 +32,7 @@ class RegionController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Show all district list',
-            'kota' => $district
+            'kecamatan' => $district
         ]);
     }
     public function getVillage($id){
@@ -40,15 +40,15 @@ class RegionController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Show all village list',
-            'kota' => $village
+            'kelurahan' => $village
         ]);
     }
     public function getPostalCode($id){
-        $postalCode = PostalCode::find($id);
+        $postalCode = Village::find($id)->with('Postal_code');
         return response()->json([
             'status' => true,
             'message' => 'Show all postal code',
-            'kota' => $postalCode
+            'kode_pos' => $postalCode
         ]);
     }
 }
