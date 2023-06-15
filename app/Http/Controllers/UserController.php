@@ -182,6 +182,12 @@ class UserController extends Controller
         if ($request->phone_number) {
             $user->phone_number = $request->phone_number;
         }
+        if ($request->latitude) {
+            $user->latitude = $request->latitude;
+        }
+        if ($request->longitude) {
+            $user->longitude = $request->longitude;
+        }
         if ($request->file('avatar')) {
             if ($user->avatar && Storage::exists($user->avatar)) {
                 Storage::delete($user->avatar);

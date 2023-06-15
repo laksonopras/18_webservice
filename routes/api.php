@@ -8,6 +8,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\GetPictController;
 use App\Http\Controllers\ProgresController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\SquareFeedController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -48,28 +49,27 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
 
         //Banner
         Route::get('banner', [BannerController::class, 'index']); // menampilkan semua banner
-        Route::get('banner/{id}', [GetPictController::class, 'getBanner']); //menampilkan 1 banner
         Route::post('banner/', [BannerController::class, 'store']); //menambahkan 1 banner
         Route::post('banner/{id}', [BannerController::class, 'update']); //memperbarui banner yang sudah ada
         Route::delete('banner/{id}', [BannerController::class, 'destroy']); //menghapus banner
-
+        
         //Square Feed
         Route::get('sq', [SquareFeedController::class, 'index']); // menampilkan semua sq
         Route::get('sq/{id}', [GetPictController::class, 'getSquareFeed']); //menampilkan 1 sq
         Route::post('sq/', [SquareFeedController::class, 'store']); //menambahkan 1 sq
         Route::post('sq/{id}', [SquareFeedController::class, 'update']); //memperbarui sq yang sudah ada
         Route::delete('sq/{id}', [SquareFeedController::class, 'destroy']); //menghapus banner
-
+        
         //Customer
         Route::get('user', [UserController::class, 'index']); //menapmilkan semua customer
         Route::get('user/{id}', [UserController::class, 'getById']); //menampilkan 1 customer
         Route::put('user/{id}', [UserController::class, 'updateForAdmin']); //update customer dari admin
         Route::delete('user/{id}', [UserController::class, 'destroy']); //menghapus customer
-
+        
         //partner
         Route::get('/transaction', [TransactionController::class, 'index']); //menampilkan semua transaksi
         Route::put('/transaction/{id}', [TransactionController::class, 'update']); //update semua transaksi
-
+        
         //partner
         Route::get('/partner', [PartnerController::class, 'index']); //menampilkan semua partner
         Route::get('/partner/{id}', [PartnerController::class, 'showDetail']); //menampilkan 1 partner
@@ -80,6 +80,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
         Route::put('/partner/{id}/confirmation', [PartnerController::class, 'confirmation']); //shortcut confirmasi data partner
         Route::post('/partner/{id}', [PartnerController::class, 'destroy']); //menghapus data partner
     });
+    Route::get('banner/{id}', [GetPictController::class, 'getBanner']); //menampilkan 1 banner
     Route::get('avatar', [GetPictController::class, 'getAdminbyToken']); //menampilkan foto profil admin yang login
     Route::get('user/avatar/{id}', [GetPictController::class, 'getUserbyId']); //menampilkan foto profil customer
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan foto profil partner
@@ -125,3 +126,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     Route::get('avatar', [GetPictController::class, 'getUserbyToken']); //menampilkan gambar partner yang sedang login
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
 });
+
+//location
+Route::get('/provinsi', [RegionController::class, 'getProvince']);
+Route::get('/kota/{id}', [RegionController::class, 'getCity']);
+Route::get('/kecamatan/{id}', [RegionController::class, 'getDistrict']);
+Route::get('/kelurahan/{id}', [RegionController::class, 'getVillage']);
+Route::get('/kodepos{id}', [RegionController::class, 'getPostcode']);

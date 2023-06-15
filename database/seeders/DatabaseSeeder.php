@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\District;
 use App\Models\Progres;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -29,6 +30,11 @@ class DatabaseSeeder extends Seeder
             BannerSeeder::class,
             SquareFeedSeeder::class,
             KemajuanSeeder::class,
+            ProvinceSeeder::class,
+            CitySeeder::class,
+            DistrictSeeder::class,
+            PostalCodeSeeder::class,
+            VillageSeeder::class
         ]);
     }
 }
