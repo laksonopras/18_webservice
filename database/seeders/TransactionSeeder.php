@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use App\Models\Package;
 use App\Models\Partner;
 use App\Models\Transaction;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,15 +23,13 @@ class TransactionSeeder extends Seeder
         $faker = Faker::create('id_ID');
 
         for ($i = 1; $i <= 10; $i++) {
-            $quantity = rand(1, 10);
-            $sub_price = 50000;
-            $price = $quantity * $sub_price;
+            $package = Package::inRandomOrder()->first();
 
             Transaction::create([
                 'id' => Uuid::uuid4(),
-                'quantity' => rand(1, 10),
-                'sub_price' => $sub_price,
-                'price' => $price,
+                'package_name' => $package->package_name,
+                'count_month' => $package->count_month,
+                'price' => $package->price,
                 'partner_id' => Partner::inRandomOrder()->first()->id,
                 'admin_id' => Admin::inRandomOrder()->first()->id,
             ]);

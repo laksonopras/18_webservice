@@ -25,7 +25,7 @@ class PartnerSeeder extends Seeder
             // $latitude = rand(-9000, 9000); // Generate a random latitude between -90 and 90
             // $longitude = rand(-18000, 18000); // Generate a random longitude between -180 and 180
 
-            Partner::create([
+            $partner = Partner::create([
                 'partner_name' => $partnerName[rand(0, 4)],
                 'email' => $faker->email,
                 'phone_number' => $faker->phoneNumber,
@@ -42,6 +42,9 @@ class PartnerSeeder extends Seeder
                 'link_google_map' => "https://goo.gl/maps/Qr8qa2vx94zgV9a3A",
                 'village_id' => 2
             ]);
+
+            $user = User::find($partner->user_id);
+            $user->update(['partner_id' => $partner->id]);
         }
     }
 }

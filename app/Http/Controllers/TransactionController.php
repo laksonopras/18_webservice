@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\DateStatus;
+use App\Models\Package;
 use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
@@ -39,9 +42,14 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function forMitra()
     {
-        //
+        $transaction = Transaction::where('partner_id', auth('user')->user()->partner_id)->get();
+        return response()->json([
+            'status' => true,
+            'message' => 'Show all transactions',
+            'transaction' => $transaction
+        ]);
     }
 
     /**
@@ -52,26 +60,29 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        // try {
+            $package = Package::find($request->package_id);
             $transaction = Transaction::create([
                 'id' => Uuid::uuid4()->toString(),
-                'quantity' => $request->quantity,
-                'sub_price' => 500000,
-                'price' => $request->quantity * 500000,
-                'partner_id' => $request->partner_id,
-                'payment_proof' => $request->payment_proof,
+                'package_name' => $package->package_name,
+                'count_month' => $package->count_month,
+                'price' => $package->price,
+                'date_start' => $request->date_start,
+                'date_end' => date('Y-m-d', strtotime("+ $package->count_month month", strtotime( $request->date_start ))),
+                'partner_id' => auth('user')->user()->partner_id,
+                'admin_id' => Admin::inRandomOrder()->first()->id,
             ]);
             return response()->json([
                 'status' => true,
                 'message' => 'input success',
                 'transaction' => $transaction
             ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Transaction failed'
-            ]);
-        }
+        // } catch (Exception $e) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Transaction failed'
+        //     ]);
+        // }
     }
 
     /**
@@ -135,8 +146,11 @@ class TransactionController extends Controller
     public function update(Request $request, $id)
     {
         $transaction = Transaction::find($id);
-        if ($request->payment_proof) {
-            $transaction->payment_proof = $request->payment_proof;
+        if ($request->file('payment_proof')) {
+            if ($transaction->payment_proof && Storage::exists($transaction->payment_proof)) {
+                Storage::delete($transaction->payment_proof);
+            }
+            $transaction->payment_proof = Storage::putFile('payment_proof', $request->file('payment_proof'));
         }
         if ($request->status || $request->status == 0) {
             $transaction->status = $request->status;

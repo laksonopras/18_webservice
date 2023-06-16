@@ -7,6 +7,7 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\GetPictController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProgresController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\SquareFeedController;
@@ -122,9 +123,21 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         Route::post('/call/update/{id}', [CallController::class, 'update']); //histori panggilan partner
 
         Route::get('progres', [ProgresController::class, 'index']); //Registrasi customer
+        
+        //transaction
+        Route::get('/partner/transaction/', [TransactionController::class, 'forMitra']); //Registrasi customer
+        Route::post('/partner/transaction/', [TransactionController::class, 'store']); //Registrasi customer
+        Route::post('/partner/transaction/{id}', [TransactionController::class, 'update']); //Registrasi customer
+        
+        //Package
+        Route::get('/package', [PackageController::class, 'index']);
+
+
     });
     Route::get('avatar', [GetPictController::class, 'getUserbyToken']); //menampilkan gambar partner yang sedang login
+    Route::get('/payment_proof/{id}', [GetPictController::class, 'getPaymentProof']); //menampilkan gambar partner yang sedang login
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
+    Route::get('/partner/avatar/', [GetPictController::class, 'getMyPartner']); //menampilkan logo partner
 });
 
 //location
@@ -133,3 +146,4 @@ Route::get('/kota/{id}', [RegionController::class, 'getCity']);
 Route::get('/kecamatan/{id}', [RegionController::class, 'getDistrict']);
 Route::get('/kelurahan/{id}', [RegionController::class, 'getVillage']);
 Route::get('/kodepos{id}', [RegionController::class, 'getPostcode']);
+

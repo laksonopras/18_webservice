@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Banner;
 use App\Models\Partner;
 use App\Models\SquareFeed;
+use App\Models\Transaction;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -40,6 +41,18 @@ class GetPictController extends Controller
     {
         try{
             $partner = Partner::find($id);
+            return response()->file(Storage::disk('local')->path($partner->avatar));
+        }catch (Exception $e){
+            return response()->json([
+                'status' => false,
+                'message' => 'image not available'
+            ]);
+        }
+    }
+    public function getMyPartner()
+    {
+        try{
+            $partner = Partner::find(auth('user')->user()->partner_id);
             return response()->file(Storage::disk('local')->path($partner->avatar));
         }catch (Exception $e){
             return response()->json([
@@ -85,6 +98,17 @@ class GetPictController extends Controller
         try{
             $admin = Admin::find($id);
             return response()->file( Storage::disk('local')->path($admin->avatar));
+        }catch (Exception $e){
+            return response()->json([
+                'status' => false,
+                'message' => 'image not available'
+            ]);
+        }
+    }
+    public function getPaymentProof($id){
+        try{
+            $payment_proof = Transaction::find($id);
+            return response()->file( Storage::disk('local')->path($payment_proof->payment_proof));
         }catch (Exception $e){
             return response()->json([
                 'status' => false,

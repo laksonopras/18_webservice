@@ -13,9 +13,9 @@ class Transaction extends Model
     // protected $primaryKey = 'id';
     // public $incrementing = false;
 
-    // protected $fillable = [
-    //     'id', 'quantity', 'sub_price', 'price', 'partner_id', 'admin_id', 'payment_proof', 'status'
-    // ];
+    protected $fillable = [
+        'id', 'package_name', 'count_month', 'price', 'partner_id', 'admin_id', 'payment_proof', 'status', 'date_start', 'date_end'
+    ];
 
     protected $table = 'transactions';
     protected $primaryKey = 'id';

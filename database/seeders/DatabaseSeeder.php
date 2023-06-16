@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             DistrictSeeder::class,
             PostalCodeSeeder::class,
             VillageSeeder::class,
+            PackageSeeder::class,
             PartnerSeeder::class,
             TransactionSeeder::class,
             BannerSeeder::class,

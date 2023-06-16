@@ -48,7 +48,7 @@ class PartnerController extends Controller
                 'user_id' => auth('user')->user()->id
             ]);
             $user = User::find(auth('user')->user()->id);
-            $user->update(['role' => 1]);
+            $user->update(['partner_id' => $partner->id]);
             return response()->json([
                 'status' => true,
                 'message' => 'successfully register',
@@ -204,17 +204,6 @@ class PartnerController extends Controller
     public function updateForAdmin(Request $request, $id)
     {
         $partner = Partner::find($id);
-
-        // $partner->partner_name = $request->input('partner_name');
-        // $partner->email = $request->input('email');
-        // $partner->coordinate = $request->input('coordinate');
-        // $partner->count_order = $request->input('count_order');
-        // $partner->account_status = $request->input('account_status');
-        // $partner->operational_status = $request->input('operational_status');
-        // $partner->address = $request->input('address');
-        // $partner->phone_number = $request->input('phone_number');
-        // $partner->description = $request->input('description');
-        // $partner->save();
         if ($request->partner_name) {
             $partner->partner_name = $request->partner_name;
         }
@@ -242,7 +231,7 @@ class PartnerController extends Controller
         if ($request->description) {
             $partner->description = $request->description;
         }
-        if ($request->operational_status) {
+        if ($request->operational_status || $request->operational_status == 0) {
             $partner->operational_status = $request->operational_status;
         }
         if ($request->count_order) {
@@ -254,7 +243,7 @@ class PartnerController extends Controller
         if ($request->request_status) {
             if ($request->request_status == 0) {
                 $user = User::find(auth('user')->user()->id);
-                $user->update(['role' => 0]);
+                $user->update(['partner_id' => 0]);
             }
             $partner->request_status = $request->request_status;
         }

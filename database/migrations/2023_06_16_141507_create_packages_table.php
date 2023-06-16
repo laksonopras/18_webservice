@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('date_status', function (Blueprint $table) {
+        Schema::create('packages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('partner_id')->references('id')->on('partners')->onDelete('cascade');
-            $table->string('transaction_id');
-            $table->date('date_start');
-            $table->date('date_end');
-            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
+            $table->string('package_name');
+            $table->integer('count_month');
+            $table->integer('price');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('date_status');
+        Schema::dropIfExists('packages');
     }
 };
