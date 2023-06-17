@@ -113,6 +113,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan daftar partner yang buka
         Route::post('/partner/update', [PartnerController::class, 'updateForUser']); //memperbarui informasi partner
         Route::get('/partner/you', [PartnerController::class, 'show']); //menampilkan mitranya sendiri
+        Route::get('/partner/{id}', [PartnerController::class, 'showDetail']); //menampilkan mitranya sendiri
         Route::post('/partner', [PartnerController::class, 'store']); //menampilkan mitranya sendiri
 
         //call
