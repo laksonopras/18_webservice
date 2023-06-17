@@ -73,7 +73,7 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        $partner = Partner::with(['category', 'admin', 'village'])->get();
+        $partner = Partner::with(['category', 'admin', 'city'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
@@ -82,7 +82,7 @@ class PartnerController extends Controller
     }
     public function getOpenPartner()
     {
-        $partner = Partner::where('account_status', 1)->where('operational_status', 1)->with(['category'])->get();
+        $partner = Partner::where('account_status', 1)->where('operational_status', 1)->with(['category', 'city'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
@@ -91,7 +91,7 @@ class PartnerController extends Controller
     }
     public function getActivePartner()
     {
-        $partner = Partner::where('account_status', 1)->with(['category', 'village'])->get();
+        $partner = Partner::where('account_status', 1)->with(['category', 'city'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
@@ -100,7 +100,7 @@ class PartnerController extends Controller
     }
     public function getUnactivePartner()
     {
-        $partner = Partner::where('account_status', 0)->with(['category'])->get();
+        $partner = Partner::where('account_status', 0)->with(['category' , 'city'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
@@ -116,7 +116,7 @@ class PartnerController extends Controller
      */
     public function show()
     {
-        $partner = Partner::where('user_id', auth('user')->user()->id)->with(['category', 'admin'])->get()->first();
+        $partner = Partner::where('user_id', auth('user')->user()->id)->with(['category', 'admin', 'city'])->get()->first();
         if ($partner) {
             return response()->json([
                 'status' => true,
@@ -133,7 +133,7 @@ class PartnerController extends Controller
 
     public function showDetail($id)
     {
-        $partner = Partner::with(['category', 'user'])->find($id);
+        $partner = Partner::with(['category', 'user', 'city'])->find($id);
         // dd($partner);
         if (!$partner) {
             return response()->json([
@@ -284,7 +284,7 @@ class PartnerController extends Controller
     public function confirmation(Request $request, $id)
     {
         $partner = Partner::find($id);
-        $partner->account_status = $request->input('account_status');
+        $partner->request_status = $request->input('request_status');
         $partner->save();
         return response()->json([
             'status' => true,
