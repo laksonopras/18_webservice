@@ -46,7 +46,8 @@ class CallController extends Controller
             'partner_id' => $id,
             'user_coordinate' => 0,
             'message' => $request->message,
-            'order_status' => 1
+            'order_status' => 1,
+            'address' => $request->address
         ]);
         $user = User::find($call->user_id);
         $user->ordering = $call->id;

@@ -80,11 +80,19 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
         Route::post('/partner/update/{id}', [PartnerController::class, 'updateForAdmin']); //memperbarui data partner
         Route::put('/partner/{id}/confirmation', [PartnerController::class, 'confirmation']); //shortcut confirmasi data partner
         Route::post('/partner/{id}', [PartnerController::class, 'destroy']); //menghapus data partner
+
+        //package
+        Route::get('/package', [PackageController::class, 'index']);
+        Route::get('package/{id}', [PackageController::class, 'show']); //menampilkan 1 package
+        Route::post('package/', [PackageController::class, 'store']); //membuat package baru
+        Route::put('package/{id}', [PackageController::class, 'update']); //memperbarui package yang sudah ada
+        Route::delete('package/{id}', [PackageController::class, 'destroy']); //menghapus package
     });
     Route::get('banner/{id}', [GetPictController::class, 'getBanner']); //menampilkan 1 banner
     Route::get('avatar', [GetPictController::class, 'getAdminbyToken']); //menampilkan foto profil admin yang login
     Route::get('user/avatar/{id}', [GetPictController::class, 'getUserbyId']); //menampilkan foto profil customer
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan foto profil partner
+    Route::get('/payment_proof/{id}', [GetPictController::class, 'getPaymentProof']);
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
@@ -113,6 +121,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan daftar partner yang buka
         Route::post('/partner/update', [PartnerController::class, 'updateForUser']); //memperbarui informasi partner
         Route::get('/partner/you', [PartnerController::class, 'show']); //menampilkan mitranya sendiri
+        Route::get('/partner/{id}', [PartnerController::class, 'showDetail']); //menampilkan mitranya sendiri
         Route::post('/partner', [PartnerController::class, 'store']); //menampilkan mitranya sendiri
 
         //call
