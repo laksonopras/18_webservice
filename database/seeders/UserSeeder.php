@@ -19,6 +19,16 @@ class UserSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
+        User::create([
+            "username" => "Ferdy Hahan Pradana",
+            "email" => "user@user.com",
+            "password" => Hash::make('password'),
+        ]);
+        User::create([
+            "username" => "Ferdy Hahan Pradana 2",
+            "email" => "user2@user.com",
+            "password" => Hash::make('password'),
+        ]);
         for ($i = 1; $i <= 10; $i++) {
 
             User::create([

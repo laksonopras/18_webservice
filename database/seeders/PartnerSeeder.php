@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Partner;
 use App\Models\User;
+use App\Models\Village;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,7 +22,7 @@ class PartnerSeeder extends Seeder
         $faker = Faker::create('id_ID');
         $partnerName = ['Netral', 'Mitsubishi Motor', 'Toyota AUTO 2000', 'Honda Motor', 'Berkah Abadi'];
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < count($partnerName); $i++) {
             // $latitude = rand(-9000, 9000); // Generate a random latitude between -90 and 90
             // $longitude = rand(-18000, 18000); // Generate a random longitude between -180 and 180
 
@@ -40,7 +41,7 @@ class PartnerSeeder extends Seeder
                 'category_id' => Category::inRandomOrder()->first()->id,
                 'user_id' => User::inRandomOrder()->first()->id,
                 'link_google_map' => "https://goo.gl/maps/Qr8qa2vx94zgV9a3A",
-                'village_id' => 2
+                'village_id' => Village::inRandomOrder()->first()->id
             ]);
 
             $user = User::find($partner->user_id);
