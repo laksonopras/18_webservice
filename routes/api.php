@@ -154,5 +154,6 @@ Route::get('/provinsi', [RegionController::class, 'getProvince']);
 Route::get('/kota/{id}', [RegionController::class, 'getCity']);
 Route::get('/kecamatan/{id}', [RegionController::class, 'getDistrict']);
 Route::get('/kelurahan/{id}', [RegionController::class, 'getVillage']);
+Route::get('/kelurahan', [RegionController::class, 'getVillages']);
 Route::get('/kodepos{id}', [RegionController::class, 'getPostcode']);
 

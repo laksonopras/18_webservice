@@ -13,11 +13,11 @@ class Village extends Model
         'village', 'district_id', 'postal_code_id'
     ];
 
-    public function Postal_code(){
+    public function postal_code(){
         return $this->belongsTo(PostalCode::class);
     }
 
-    public function District(){
-        return $this->belongsTo(District::class);
+    public function district(){
+        return $this->belongsTo(District::class, 'id');
     }
 }

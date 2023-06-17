@@ -22,7 +22,9 @@ class Partner extends Model
         'admin_id',
         'user_id',
         'link_google_map',
-        'village_id'
+        'village',
+        'district',
+        'city_id',
 
     ];
 
