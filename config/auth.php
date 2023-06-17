@@ -52,7 +52,7 @@ return [
             'driver' => 'jwt',
             'provider' => 'partners',
         ],
-        
+
     ],
 
     /*
@@ -115,7 +115,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 60,
+            'expire' => 60 * 1000,
             'throttle' => 60,
         ],
     ],
