@@ -41,8 +41,8 @@ class Partner extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
-    public function village()
+    public function city()
     {
-        return $this->belongsTo(Village::class, 'village_id');
+        return $this->belongsTo(City::class, 'city_id');
     }
 }
