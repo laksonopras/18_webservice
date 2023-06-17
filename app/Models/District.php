@@ -13,11 +13,11 @@ class District extends Model
         'district', 'city_id'
     ];
 
-    public function City(){
-        return $this->belongsTo(City::class);
+    public function city(){
+        return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function Village(){
+    public function village(){
         return $this->hasMany(Village::class);
     }
 }

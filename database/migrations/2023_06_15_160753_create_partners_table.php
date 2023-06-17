@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('village');
             $table->string('district');
+            $table->integer('postal_code');
             $table->foreignId('city_id')->references('id')->on('cities')->onDelete('cascade');
             $table->timestamps();
         });
