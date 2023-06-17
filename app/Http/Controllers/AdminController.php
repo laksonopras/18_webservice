@@ -35,7 +35,8 @@ class AdminController extends Controller
             $admin = Admin::create([
                 'username' => $request->username,
                 'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
+                
             ]);
             return response()->json([
                 'status' => true,

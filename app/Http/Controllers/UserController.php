@@ -36,6 +36,7 @@ class UserController extends Controller
             'username' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:8'],
+            'no_phone' => ['required', 'unique:users'],
         );
 
         $validate = Validator::make($request->all(), $rules);
@@ -49,6 +50,7 @@ class UserController extends Controller
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'no_phone' => $request->no_phone
             ]);
             return response()->json([
                 'status' => true,
@@ -179,14 +181,8 @@ class UserController extends Controller
         if ($request->username) {
             $user->username = $request->username;
         }
-        if ($request->phone_number) {
-            $user->phone_number = $request->phone_number;
-        }
-        if ($request->latitude) {
-            $user->latitude = $request->latitude;
-        }
-        if ($request->longitude) {
-            $user->longitude = $request->longitude;
+        if ($request->no_phone) {
+            $user->no_phone = $request->no_phone;
         }
         if ($request->file('avatar')) {
             if ($user->avatar && Storage::exists($user->avatar)) {

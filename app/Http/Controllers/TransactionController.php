@@ -45,6 +45,7 @@ class TransactionController extends Controller
     public function forMitra()
     {
         $transaction = Transaction::where('partner_id', auth('user')->user()->partner_id)->get();
+        
         return response()->json([
             'status' => true,
             'message' => 'Show all transactions',

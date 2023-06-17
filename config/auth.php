@@ -44,14 +44,6 @@ return [
             'driver' => 'jwt',
             'provider' => 'users',
         ],
-        'technician' => [
-            'driver' => 'jwt',
-            'provider' => 'technicians',
-        ],
-        'partner' => [
-            'driver' => 'jwt',
-            'provider' => 'partners',
-        ],
 
     ],
 
@@ -77,17 +69,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'technician' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Technician::class,
-        ],
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
-        ],
-        'partners' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Partner::class,
         ],
 
         // 'users' => [
@@ -114,6 +98,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60 * 1000,
+            'throttle' => 60,
+        ],
+        'admins' => [
+            'provider' => 'admins',
             'table' => 'password_resets',
             'expire' => 60 * 1000,
             'throttle' => 60,

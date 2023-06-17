@@ -113,9 +113,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         Route::get('category', [CategoryController::class, 'index']); //menampilkan semua kategori
 
         // banner
-        Route::get('banner/{id}', [GetPictController::class, 'getBanner']); //menampilkan 1 banner
         Route::get('banner', [BannerController::class, 'index']); // menampilkan semua banner
-
+        
         //partner
         Route::get('/partner/active', [PartnerController::class, 'getActivePartner']); //menampilkan daftar partner yang aktif
         Route::get('/partner/open', [PartnerController::class, 'getOpenPartner']); //menampilkan daftar partner yang buka
@@ -123,14 +122,14 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         Route::get('/partner/you', [PartnerController::class, 'show']); //menampilkan mitranya sendiri
         Route::get('/partner/{id}', [PartnerController::class, 'showDetail']); //menampilkan mitranya sendiri
         Route::post('/partner', [PartnerController::class, 'store']); //menampilkan mitranya sendiri
-
+        
         //call
         Route::post('/call/{id}', [CallController::class, 'store']); //membuat panggilan
         Route::get('/call/final', [CallController::class, 'historyUser']); //Histori panggilan pengguna
         Route::get('/call/process', [CallController::class, 'processing']); //Histori panggilan pengguna
         Route::get('/call/partner/{id}', [CallController::class, 'historyPartner']); //histori panggilan partner
         Route::post('/call/update/{id}', [CallController::class, 'update']); //histori panggilan partner
-
+        
         Route::get('progres', [ProgresController::class, 'index']); //Registrasi customer
         
         //transaction
@@ -140,13 +139,14 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         
         //Package
         Route::get('/package', [PackageController::class, 'index']);
-
-
+        
+        
     });
+    Route::get('banner/{id}', [GetPictController::class, 'getBanner']); //menampilkan 1 banner
     Route::get('avatar', [GetPictController::class, 'getUserbyToken']); //menampilkan gambar partner yang sedang login
     Route::get('/payment_proof/{id}', [GetPictController::class, 'getPaymentProof']); //menampilkan gambar partner yang sedang login
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
-    Route::get('/partner/avatar/', [GetPictController::class, 'getMyPartner']); //menampilkan logo partner
+    Route::get('/partner/avatar', [GetPictController::class, 'getMyPartner']); //menampilkan logo partner
 });
 
 //location

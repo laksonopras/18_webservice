@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('username');
             $table->string('email')->unique();
-            $table->float('latitude')->nullable();
-            $table->float('longitude')->nullable();
+            $table->string('no_phone')->unique();
+            $table->string('location')->nullable();
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->integer('status')->default(1);

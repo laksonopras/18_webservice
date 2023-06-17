@@ -171,7 +171,7 @@ class PartnerController extends Controller
 
     public function updateForUser(Request $request)
     {
-        $partner = Partner::where('user_id', auth('user')->user()->id)->get()->first();
+        $partner = Partner::find(auth('user')->user()->partner_id);
         if ($request->partner_name != null) {
             $partner->partner_name = $request->partner_name;
         }
@@ -195,7 +195,7 @@ class PartnerController extends Controller
             $district = District::find($village->district_id);
             $partner->village = $village->village;
             $partner->district =  $district->district;
-            $partner->city = City::find($district->city_id)->id;
+            $partner->city_id = City::find($district->city_id)->id;
             $partner->postal_code = PostalCode::find($village->id)->postal_code;
         }
         if ($request->link_google_map) {
@@ -204,7 +204,7 @@ class PartnerController extends Controller
         if ($request->description) {
             $partner->description = $request->description;
         }
-        if ($request->operational_status || $request->operational_status == 0) {
+        if (!is_null($request->operational_status)) {
             $partner->operational_status = $request->operational_status;
         }
         $partner->save();
