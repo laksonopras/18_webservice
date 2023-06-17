@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\District;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -190,7 +191,12 @@ class PartnerController extends Controller
             $partner->avatar = Storage::putFile('partner', $request->file('avatar'));
         }
         if ($request->village_id) {
-            $partner->village_id = $request->village_id;
+            $village = Village::find($request->village_id);
+            $district = District::find($village->district_id);
+            $partner->village = $village->village;
+            $partner->district =  $district->district;
+            $partner->city = City::find($district->city_id)->id;
+            $partner->postal_code = PostalCode::find($village->id)->postal_code;
         }
         if ($request->link_google_map) {
             $partner->link_google_map = $request->link_google_map;
@@ -225,7 +231,12 @@ class PartnerController extends Controller
             $partner->address = $request->address;
         }
         if ($request->village_id) {
-            $partner->village_id = $request->village_id;
+            $village = Village::find($request->village_id);
+            $district = District::find($village->district_id);
+            $partner->village = $village->village;
+            $partner->district =  $district->district;
+            $partner->city = City::find($district->city_id)->id;
+            $partner->postal_code = PostalCode::find($village->id)->postal_code;
         }
         if ($request->link_google_map) {
             $partner->link_google_map = $request->link_google_map;
