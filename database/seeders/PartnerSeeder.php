@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\City;
+use App\Models\District;
 use App\Models\Partner;
 use App\Models\User;
 use App\Models\Village;
@@ -25,7 +27,8 @@ class PartnerSeeder extends Seeder
         for ($i = 0; $i < 50; $i++) {
             // $latitude = rand(-9000, 9000); // Generate a random latitude between -90 and 90
             // $longitude = rand(-18000, 18000); // Generate a random longitude between -180 and 180
-
+            $village = Village::inRandomOrder()->first();
+            $district = District::find($village->district_id);
             $partner = Partner::create([
                 'partner_name' => $partnerName[rand(0, 4)],
                 'email' => $faker->email,
@@ -41,7 +44,9 @@ class PartnerSeeder extends Seeder
                 'category_id' => Category::inRandomOrder()->first()->id,
                 'user_id' => User::inRandomOrder()->first()->id,
                 'link_google_map' => "https://goo.gl/maps/Qr8qa2vx94zgV9a3A",
-                'village_id' => Village::inRandomOrder()->first()->id
+                'village' => $village->village,
+                'district' => $district->district,
+                'city_id' => City::find($district->city_id)->id
             ]);
 
             $user = User::find($partner->user_id);

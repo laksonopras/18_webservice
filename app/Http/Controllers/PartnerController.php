@@ -44,7 +44,9 @@ class PartnerController extends Controller
                 'description' => $request->description,
                 'category_id' => $request->category_id,
                 'link_google_map' => $request->link_google_map,
-                'village_id' => $request->village_id,
+                'village' => $request->village_id,
+                'district' => $request->district,
+                'city_id' => $request->city_id,
                 'user_id' => auth('user')->user()->id
             ]);
             $user = User::find(auth('user')->user()->id);

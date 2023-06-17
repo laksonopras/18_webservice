@@ -28,7 +28,9 @@ return new class extends Migration
             $table->integer('request_status')->nullable();     // null masih digantung, 0 ditolak, 1, diterima 
             $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('village_id')->references('id')->on('villages')->onDelete('cascade');
+            $table->string('village');
+            $table->string('district');
+            $table->foreignId('city_id')->references('id')->on('cities')->onDelete('cascade');
             $table->timestamps();
         });
     }
