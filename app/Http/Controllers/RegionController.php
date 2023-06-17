@@ -51,12 +51,4 @@ class RegionController extends Controller
             'kode_pos' => $postalCode
         ]);
     }
-    public function getVillages(){
-        $village = Village::find(1)->with('district')->get();
-        return response()->json([
-            'status' => true,
-            'message' => 'Show all village list',
-            'kelurahan' => $village->district->district_id
-        ]);
-    }
 }

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\District;
 use App\Models\Partner;
+use App\Models\PostalCode;
 use App\Models\User;
 use App\Models\Village;
 use Faker\Factory as Faker;
@@ -46,7 +47,8 @@ class PartnerSeeder extends Seeder
                 'link_google_map' => "https://goo.gl/maps/Qr8qa2vx94zgV9a3A",
                 'village' => $village->village,
                 'district' => $district->district,
-                'city_id' => City::find($district->city_id)->id
+                'city_id' => City::find($district->city_id)->id,
+                'postal_code' => PostalCode::find($village->postal_code_id)->postal_code
             ]);
 
             $user = User::find($partner->user_id);

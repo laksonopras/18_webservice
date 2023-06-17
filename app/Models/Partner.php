@@ -25,6 +25,7 @@ class Partner extends Model
         'village',
         'district',
         'city_id',
+        'postal_code'
 
     ];
 

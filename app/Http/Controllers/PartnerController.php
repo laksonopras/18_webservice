@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Partner;
+use App\Models\PostalCode;
 use App\Models\User;
+use App\Models\Village;
 use Illuminate\Support\Facades\Storage;
 
 class PartnerController extends Controller
@@ -35,6 +38,8 @@ class PartnerController extends Controller
                 'message' => $validate->messages()->first()
             ]);
         } else {
+            $village = Village::find($request->village_id);
+            $district = District::find($village->district_id);
             $partner = partner::create([
                 'partner_name' => $request->partner_name,
                 'email' => $request->email,
@@ -44,10 +49,11 @@ class PartnerController extends Controller
                 'description' => $request->description,
                 'category_id' => $request->category_id,
                 'link_google_map' => $request->link_google_map,
-                'village' => $request->village_id,
-                'district' => $request->district,
-                'city_id' => $request->city_id,
-                'user_id' => auth('user')->user()->id
+                'village' => $village->village,
+                'district' => $district->district,
+                'city_id' => City::find($district->city_id)->id,
+                'postal_code' => PostalCode::find($village->id)->postal_code,
+                'user_id' => auth('user')->user()->id,
             ]);
             $user = User::find(auth('user')->user()->id);
             $user->update(['partner_id' => $partner->id]);
