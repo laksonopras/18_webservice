@@ -44,7 +44,7 @@ class CallController extends Controller
         $call = Call::create([
             'user_id' => auth('user')->user()->id,
             'partner_id' => $id,
-            'user_coordinate' => 0,
+            'link_google_map' => $request->link_google_map,
             'message' => $request->message,
             'order_status' => 1,
             'address' => $request->address

@@ -10,7 +10,7 @@ class Call extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'partner_id', 'user_coordinate', 'order_status', 'message', 'address'
+        'user_id', 'partner_id', 'link_google_map', 'order_status', 'message', 'address'
     ];
 
     public function user(){ return $this->belongsTo(User::class); }
