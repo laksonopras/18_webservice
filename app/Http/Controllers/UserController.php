@@ -140,6 +140,9 @@ class UserController extends Controller
     public function getByToken()
     {
         $user = User::find(auth('user')->user()->id);
+        if($user->partner_id != 0){
+            $user = User::with(['partner'])->find(auth('user')->user()->id);
+        }
         return response()->json([
             'status' => true,
             'message' => 'Show all data',

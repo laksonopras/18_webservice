@@ -133,9 +133,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
         Route::get('progres', [ProgresController::class, 'index']); //Registrasi customer
         
         //transaction
-        Route::get('/partner/transaction/', [TransactionController::class, 'forMitra']); //Registrasi customer
-        Route::post('/partner/transaction/', [TransactionController::class, 'store']); //Registrasi customer
         Route::post('/partner/transaction/{id}', [TransactionController::class, 'update']); //Registrasi customer
+        Route::post('/partner/transaction/', [TransactionController::class, 'store']); //Registrasi customer
+        Route::get('/partner/transaction/list', [TransactionController::class, 'forMitra']); //Registrasi customer
         
         //Package
         Route::get('/package', [PackageController::class, 'index']);
@@ -146,7 +146,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'user'], function ($router) {
     Route::get('avatar', [GetPictController::class, 'getUserbyToken']); //menampilkan gambar partner yang sedang login
     Route::get('/payment_proof/{id}', [GetPictController::class, 'getPaymentProof']); //menampilkan gambar partner yang sedang login
     Route::get('/partner/avatar/{id}', [GetPictController::class, 'getPartner']); //menampilkan logo partner
-    Route::get('/partner/avatar', [GetPictController::class, 'getMyPartner']); //menampilkan logo partner
+    Route::get('/mitra/avatar', [GetPictController::class, 'getMyPartner']); //menampilkan logo partner
 });
 
 //location

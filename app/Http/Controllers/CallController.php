@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Call;
+use App\Models\Partner;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -83,7 +84,7 @@ class CallController extends Controller
      */
     public function historyUser()
     {
-        $call = Call::where('user_id', auth('user')->user()->id)->where('order_status', '>=', 6 )->with(['partner', 'progres'])->get();
+        $call = Call::where('user_id', auth('user')->user()->id)->where('order_status', '>=', 6 )->with(['partner', 'progres'])->orderBy('created_at', 'DESC')->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
@@ -92,7 +93,7 @@ class CallController extends Controller
     }
 
     public function processing(){
-        $call = Call::where('user_id', auth('user')->user()->id)->where('order_status', '<', 6 )->with(['partner', 'progres'])->get();
+        $call = Call::where('user_id', auth('user')->user()->id)->where('order_status', '<', 6 )->with(['partner', 'progres'])->orderBy('created_at', 'DESC')->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
@@ -102,7 +103,7 @@ class CallController extends Controller
 
     public function historyPartner($id)
     {
-        $call = Call::where('partner_id', $id)->with(['user', 'progres'])->get();
+        $call = Call::where('partner_id', $id)->with(['user', 'progres'])->orderBy('created_at', 'DESC')->get();
         return response()->json([
             'status' => true,
             'message' => 'Show all data',
@@ -128,6 +129,10 @@ class CallController extends Controller
             $user = User::find($call->user_id);
             $user->ordering = 0;
             $user->save();
+            if($call->order_status == 6){
+                $partner = Partner::find($call->partner_id);
+                $partner->update(['count_order' => $partner->count_order + 1]);
+            }
         }
         return response()->json([
             'status' => true,

@@ -56,4 +56,6 @@ class User extends Authenticatable implements JWTSubject
     public function call(){ return $this->belongsTo(Call::class); }
 
     public function review(){ return $this->belongsTo(Review::class); }
+
+    public function partner(){ return $this->hasOne(Partner::class); }
 }
