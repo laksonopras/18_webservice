@@ -187,6 +187,9 @@ class UserController extends Controller
         if ($request->no_phone) {
             $user->no_phone = $request->no_phone;
         }
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
         if ($request->file('avatar')) {
             if ($user->avatar && Storage::exists($user->avatar)) {
                 Storage::delete($user->avatar);

@@ -82,7 +82,7 @@ class PartnerController extends Controller
     }
     public function getOpenPartner()
     {
-        $partner = Partner::where('account_status', 1)->where('operational_status', 1)->with(['category', 'city'])->get();
+        $partner = Partner::where('account_status', 1)->where('operational_status', 1)->where('request_status', 1)->with(['category', 'city'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
@@ -91,7 +91,7 @@ class PartnerController extends Controller
     }
     public function getActivePartner()
     {
-        $partner = Partner::where('account_status', 1)->with(['category', 'city'])->get();
+        $partner = Partner::where('account_status', 1)->where('request_status', 1)->with(['category', 'city'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
@@ -100,7 +100,7 @@ class PartnerController extends Controller
     }
     public function getUnactivePartner()
     {
-        $partner = Partner::where('account_status', 0)->with(['category' , 'city'])->get();
+        $partner = Partner::where('account_status', 0)->where('request_status', 1)->with(['category' , 'city'])->get();
         return response()->json([
             'status' => true,
             'message' => 'Show All Data',
