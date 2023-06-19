@@ -22,7 +22,7 @@ use App\Http\Controllers\CallController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return dd("ini 18_webservice");
 });
 Route::get('review', [ReviewController::class, 'index']);
 Route::get('transaction', [TransactionController::class, 'index']);
