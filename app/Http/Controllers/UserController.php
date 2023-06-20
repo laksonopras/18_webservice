@@ -140,7 +140,7 @@ class UserController extends Controller
     public function getByToken()
     {
         $user = User::find(auth('user')->user()->id);
-        if($user->partner_id != 0){
+        if ($user->partner_id != 0) {
             $user = User::with(['partner'])->find(auth('user')->user()->id);
         }
         return response()->json([
@@ -211,7 +211,7 @@ class UserController extends Controller
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->status = $request->input('status');
-        $user->role = $request->input('role');
+        $user->partner_id = $request->input('partner_id');
         if ($request->file('avatar')) {
             if ($user->avatar && Storage::exists($user->avatar)) {
                 Storage::delete($user->avatar);
