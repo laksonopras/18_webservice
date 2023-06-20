@@ -25,13 +25,13 @@ class PartnerSeeder extends Seeder
         $faker = Faker::create('id_ID');
         $partnerName = ['Netral', 'Mitsubishi Motor', 'Toyota AUTO 2000', 'Honda Motor', 'Berkah Abadi'];
         $request_status = [null, 0, 1];
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < count($partnerName); $i++) {
             // $latitude = rand(-9000, 9000); // Generate a random latitude between -90 and 90
             // $longitude = rand(-18000, 18000); // Generate a random longitude between -180 and 180
             $village = Village::inRandomOrder()->first();
             $district = District::find($village->district_id);
             $partner = Partner::create([
-                'partner_name' => $partnerName[rand(0, 4)],
+                'partner_name' => $partnerName[$i],
                 'email' => $faker->email,
                 'phone_number' => $faker->phoneNumber,
                 'address' => $faker->address,
