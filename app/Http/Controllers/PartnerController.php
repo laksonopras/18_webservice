@@ -294,7 +294,13 @@ class PartnerController extends Controller
     }
     public function destroy($id)
     {
-        Partner::destroy($id);
+        $partner = Partner::find($id);
+        if ($partner->avatar && Storage::exists($partner->avatar)) {
+            Storage::delete($partner->avatar);
+        }
+        $user = User::find($partner->user_id);
+        $user->update(['partner_id' => 0]);
+        Partner:: destroy ($partner->id);
         return response()->json([
             'status' => true,
             'message' => 'partner telah dihapus'

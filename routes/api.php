@@ -64,7 +64,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin'], function ($router) {
         //Customer
         Route::get('user', [UserController::class, 'index']); //menapmilkan semua customer
         Route::get('user/{id}', [UserController::class, 'getById']); //menampilkan 1 customer
-        Route::put('user/{id}', [UserController::class, 'updateForAdmin']); //update customer dari admin
+        Route::post('user/{id}', [UserController::class, 'updateForAdmin']); //update customer dari admin
         Route::delete('user/{id}', [UserController::class, 'destroy']); //menghapus customer
         
         //partner

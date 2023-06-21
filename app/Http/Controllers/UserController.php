@@ -218,6 +218,7 @@ class UserController extends Controller
             }
             $user->avatar = Storage::putFile('user', $request->file('avatar'));
         }
+        
         $user->save();
         return response()->json([
             'status' => true,

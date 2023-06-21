@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AdminSeeder::class,
-            UserSeeder::class,
+            // UserSeeder::class,
             CategorySeeder::class,
             ProvinceSeeder::class,
             CitySeeder::class,
@@ -31,10 +31,10 @@ class DatabaseSeeder extends Seeder
             PostalCodeSeeder::class,
             VillageSeeder::class,
             PackageSeeder::class,
-            PartnerSeeder::class,
-            TransactionSeeder::class,
-            BannerSeeder::class,
-            SquareFeedSeeder::class,
+            // PartnerSeeder::class,
+            // TransactionSeeder::class,
+            // BannerSeeder::class,
+            // SquareFeedSeeder::class,
             KemajuanSeeder::class,
             
         ]);
